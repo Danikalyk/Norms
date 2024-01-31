@@ -20,27 +20,27 @@ namespace Norms
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Hide();
+
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            this.Hide();
+
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            this.Hide();
+
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            this.Hide();
+
         }
 
         private void button11_Click(object sender, EventArgs e)
         {
-            this.Hide();
+
         }
 
         private void bindingSource1_CurrentChanged(object sender, EventArgs e)

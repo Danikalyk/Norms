@@ -37,10 +37,10 @@ namespace Norms
             numericUpDown2.TextChanged += NumericUpDown1_TextChanged;
 #pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
 #pragma warning disable CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
-            numericUpDown3.TextChanged += NumericUpDown1_TextChanged;
+            numericUpDown3.TextChanged += NumericUpDown3_TextChanged;
 #pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
 #pragma warning disable CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
-            numericUpDown4.TextChanged += NumericUpDown1_TextChanged;
+            numericUpDown4.TextChanged += NumericUpDown4_TextChanged;
 #pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
 
             comboBox1.SelectedIndex = 0;
@@ -139,7 +139,7 @@ namespace Norms
 
         private void NumericUpDown1_TextChanged(object sender, EventArgs e)
         {
-            textBox4.Text = Convert.ToString(CalculteDopTime());
+            textBox1.Text = Convert.ToString(CalculteDopTime());
         }
 
         private void NumericUpDown2_TextChanged(object sender, EventArgs e)

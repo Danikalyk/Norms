@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.Reflection;
+using System.Web;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace Norms
 {
@@ -22,6 +25,22 @@ namespace Norms
 
         }
 
+        //private string GetStanok(string stanok)
+        //{
+        //    if(stanok == "600")
+        //    {
+
+        //    }
+        //    else if(stanok == "5030")
+        //    {
+
+        //    }
+        //    else if(stanok == "AXEL")
+        //    {
+
+        //    }
+        //}
+
         private void label7_Click(object sender, EventArgs e)
         {
 
@@ -33,12 +52,26 @@ namespace Norms
                 !String.IsNullOrEmpty(textBox6.Text) && !String.IsNullOrEmpty(Convert.ToString(numericUpDown1.Value)) &&
                 !String.IsNullOrEmpty(Convert.ToString(numericUpDown2.Value)))
             {
-                float cuttingPerimeter = (float)numericUpDown1.Value;
-                float nvrez = (float)numericUpDown2.Value;
-                float cuttingSpeed = float.Parse(textBox5.Text, CultureInfo.InvariantCulture.NumberFormat);
+                if (comboBox3.Text != "Воздух")
+                {
+                    float cuttingPerimeter = (float)numericUpDown1.Value;
+                    float nvrez = (float)numericUpDown2.Value;
+                    float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                    float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                float cuttingTime = (cuttingPerimeter / cuttingSpeed) + (nvrez * Convert.ToSingle(textBox6.Text));
-                textBox3.Text = Convert.ToString(cuttingTime);
+                    float cuttingTime = Convert.ToSingle(((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)) * 1.3);
+                    textBox3.Text = Convert.ToString(cuttingTime);
+                }
+                else
+                {
+                    float cuttingPerimeter = (float)numericUpDown1.Value;
+                    float nvrez = (float)numericUpDown2.Value;
+                    float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                    float vrezTime = Convert.ToSingle(textBox6.Text);
+
+                    float cuttingTime = (cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime);
+                    textBox3.Text = Convert.ToString(cuttingTime);
+                }
             }
         }
 
@@ -70,7 +103,14 @@ namespace Norms
 
             //Закрытие DataReader
             DR.Close();
-            comboBox1.SelectedIndex = 0;
+            try
+            {
+                comboBox1.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Код ошибки: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         //получение информации о толщинах выбранного металла
         private void LoadTickness()
@@ -143,12 +183,34 @@ namespace Norms
 #pragma warning disable CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
             numericUpDown4.TextChanged += NumericUpDown4_TextChanged;
 #pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
+#pragma warning disable CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
+            numericUpDown7.TextChanged += NumericUpDown7_TextChanged;
+#pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
+#pragma warning disable CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
+            numericUpDown8.TextChanged += NumericUpDown8_TextChanged;
+#pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
+#pragma warning disable CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
+            numericUpDown9.TextChanged += NumericUpDown9_TextChanged;
+#pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
 
             comboBox5.SelectedIndex = 0;
             //LoadMaterials();
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
+            comboBox4.SelectedIndex = 0;
+            comboBox6.SelectedIndex = 0;
+
+            if (comboBox5.Text == "3030" || comboBox5.Text == "5030" || comboBox5.Text == "AXEL")
+            {
+                groupBox3.Visible = true;
+                groupBox4.Visible = false;
+            }
+            else
+            {
+                groupBox3.Visible = false;
+                groupBox4.Visible = true;
+            }
         }
         //получение информации о режущем газе
         private void GetInformationAboutGas(string material, string tickness, string machine)
@@ -188,16 +250,12 @@ namespace Norms
             string machine = comboBox5.Text;
             try
             {
-                string sqlQuery = $"SELECT GAS.SHORT_NAME as 'Газ', LENSES.LENS_FOCUS as 'Линза', " +
-                    $"CUTTING_INFO.ttMIN_SPEED as 'Минимальная скорость', " +
-                    $"CUTTING_INFO.ttAVE_SPEED as 'Средняя скорость', " +
-                    $"CUTTING_INFO.ttMAX_SPEED as 'Максимальная скорость', " +
-                    $"CUTTING_INFO.CUTTING_TIME as 'Время врезки', CUTTING_INFO.CUTTING_WIDTH as 'Ширина реза', " +
-                    $"MATERIAL.MATERIAL_NAME as 'Материал', MACHINE.SHORT_NAME AS 'Станок' " +
-                    $"FROM CUTTING_INFO INNER JOIN GAS ON CUTTING_INFO.GAS = GAS.GAS_CODE INNER JOIN LENSES ON " +
-                    $"CUTTING_INFO.LENS = LENSES.LENS_CODE INNER JOIN MACHINE ON " +
-                    $"CUTTING_INFO.MACHINE = MACHINE.MACHINE_CODE INNER JOIN MATERIAL ON " +
-                    $"CUTTING_INFO.MATERIAL = MATERIAL.MATERIAL_CODE " +
+                string sqlQuery = $"SELECT MACHINE.SHORT_NAME as 'Станок', MATERIAL.MATERIAL_NAME as 'Металл', " +
+                    $"GAS.SHORT_NAME as 'Газ', CUTTING_INFO.TICKNESS as 'Толщина', CUTTING_INFO.ttMIN_SPEED as 'Минимальная скорость', " +
+                    $"CUTTING_INFO.ttAVE_SPEED as 'Средняя скорость', CUTTING_INFO.ttMAX_SPEED as 'Максимальная скорость', " +
+                    $"CUTTING_INFO.CUTTING_TIME as 'Время врезки' FROM CUTTING_INFO INNER JOIN GAS ON CUTTING_INFO.GAS = GAS.GAS_CODE " +
+                    $"INNER JOIN MACHINE ON CUTTING_INFO.MACHINE = MACHINE.MACHINE_CODE " +
+                    $"INNER JOIN MATERIAL ON CUTTING_INFO.MATERIAL = MATERIAL.MATERIAL_CODE " +
                     $"WHERE MACHINE.SHORT_NAME = '{machine}' AND CUTTING_INFO.TICKNESS = {metallTickness} AND MATERIAL.MATERIAL_NAME = '{material}' AND GAS.SHORT_NAME = '{gas}'";
                 SqlDataReader DR = GetData(sqlQuery);
 
@@ -207,7 +265,6 @@ namespace Norms
                     //_cuttingWidth = Convert.ToSingle(DR["Ширина реза"]);
 
                     textBox6.Text = _incuttingTime.ToString();
-                    textBox7.Text = Convert.ToString(_cuttingWidth);
                 }
                 GetSpeed(metallTickness);
             }
@@ -223,9 +280,11 @@ namespace Norms
             {
                 string metallTickness = tickness.Replace(",", ".");
                 string materialName = comboBox1.Text;
-                string sqlQuery = $"SELECT CUTTING_INFO.ttMIN_SPEED as 'Минимальная скорость', CUTTING_INFO.ttAVE_SPEED as 'Средняя скорость', CUTTING_INFO.ttMAX_SPEED as 'Максимальная скорость' " +
-                    $"FROM CUTTING_INFO INNER JOIN MATERIAL ON CUTTING_INFO.MATERIAL = MATERIAL.MATERIAL_CODE " +
-                    $"WHERE MATERIAL.MATERIAL_NAME = '{materialName}' AND CUTTING_INFO.TICKNESS = {metallTickness}";
+                string machine = comboBox5.Text;
+                string gas = comboBox3.Text;
+                string sqlQuery = $"SELECT CUTTING_INFO.ttMIN_SPEED as 'Минимальная скорость', CUTTING_INFO.ttAVE_SPEED as 'Средняя скорость', CUTTING_INFO.ttMAX_SPEED as 'Максимальная скорость', MACHINE.SHORT_NAME as 'Станок', GAS.SHORT_NAME " +
+                    $"FROM CUTTING_INFO INNER JOIN MATERIAL ON CUTTING_INFO.MATERIAL = MATERIAL.MATERIAL_CODE INNER JOIN MACHINE ON CUTTING_INFO.MACHINE = MACHINE.MACHINE_CODE INNER JOIN GAS ON CUTTING_INFO.GAS = GAS.GAS_CODE  " +
+                    $"WHERE MATERIAL.MATERIAL_NAME = '{materialName}' AND CUTTING_INFO.TICKNESS = {metallTickness} AND MACHINE.SHORT_NAME = '{machine}' AND GAS.SHORT_NAME = '{gas}'";
 
                 SqlDataReader DR = GetData(sqlQuery);
                 while (DR.Read())
@@ -319,6 +378,7 @@ namespace Norms
         {
             string tickness = comboBox2.Text;
             string metall = comboBox1.Text;
+            string machine = comboBox5.Text;
             string sqlQuery = $"SELECT DISTINCT CUTTING_INFO_SMALL_CONTUR.ttSmallConOSPEED 'Скорость резки', " +
                 $"CUTTING_INFO_SMALL_CONTUR.smallConINCUTTING_TIME 'Время врезки', " +
                 $"CUTTING_INFO_SMALL_CONTUR.smallConCUTTING_WIDTH as 'Ширина реза', " +
@@ -328,7 +388,7 @@ namespace Norms
                 $"GAS ON CUTTING_INFO_SMALL_CONTUR.GAS = GAS.GAS_CODE INNER JOIN " +
                 $"MACHINE ON CUTTING_INFO_SMALL_CONTUR.MACHINE = MACHINE.MACHINE_CODE INNER JOIN " +
                 $"MATERIAL ON CUTTING_INFO_SMALL_CONTUR.MATERIAL = MATERIAL.MATERIAL_CODE " +
-                $"WHERE CUTTING_INFO_SMALL_CONTUR.TICKNESS = {tickness.Replace(",", ".")} AND MATERIAL.MATERIAL_NAME = '{metall}'";
+                $"WHERE CUTTING_INFO_SMALL_CONTUR.TICKNESS = {tickness.Replace(",", ".")} AND MATERIAL.MATERIAL_NAME = '{metall}' AND MACHINE.SHORT_NAME = '{machine}'";
 
             SqlDataReader DR = GetData(sqlQuery);
             if (DR.HasRows)
@@ -441,7 +501,6 @@ namespace Norms
                 comboBox3.Visible = true;
                 textBox5.Visible = true;
                 textBox6.Visible = true;
-                textBox7.Visible = true;
             }
             else
             {
@@ -450,7 +509,6 @@ namespace Norms
                 comboBox3.Visible = false;
                 textBox5.Visible = false;
                 textBox6.Visible = false;
-                textBox7.Visible = false;
                 textBox3.Text = null;
             }
         }
@@ -506,6 +564,15 @@ namespace Norms
         private void NumericUpDown2_TextChanged(object sender, EventArgs e)
         {
             CuttingCalcution();
+        }
+
+        private void NumericUpDown9_TextChanged(object sender, EventArgs e)
+        {
+            textBox3.Text = CalculateProbivka().ToString();
+            if (Convert.ToString(numericUpDown9.Value) == string.Empty)
+            {
+                numericUpDown9.Value = 0;
+            }
         }
 
         private void textBox5_TextChanged(object sender, EventArgs e)
@@ -575,35 +642,39 @@ namespace Norms
 
         private void button2_Click(object sender, EventArgs e)
         {
-#pragma warning disable CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
-            comboBox3.SelectedIndexChanged += comboBox3_SelectedIndexChanged;
-#pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
 
-            if (comboBox3.SelectedIndex != comboBox3.Items.Count - 1)
-            {
-                comboBox3.SelectedIndex += 1;
-            }
-            else
-            {
-                comboBox3.SelectedIndex = 0;
-            }
         }
 
         private float CalculateSmallConture()
         {
             float cuttingTime = 0f;
-            float aveCuttingTime = 0f;
+            float vrezTime = Convert.ToSingle(textBox6.Text);
+            float smallCuttingTime = 0f;
 
             if (!String.IsNullOrEmpty(comboBox3.Text) && !String.IsNullOrEmpty(textBox5.Text) &&
                !String.IsNullOrEmpty(textBox6.Text) && !String.IsNullOrEmpty(Convert.ToString(numericUpDown1.Value)) &&
                !String.IsNullOrEmpty(Convert.ToString(numericUpDown2.Value)))
             {
-                float cuttingPerimeter = (float)numericUpDown1.Value;
-                float nvrez = (float)numericUpDown2.Value;
-                float cuttingSpeed = float.Parse(textBox5.Text, CultureInfo.InvariantCulture.NumberFormat);
+                if (comboBox3.Text != "Воздух")
+                {
+                    float cuttingPerimeter = (float)numericUpDown1.Value;
+                    float nvrez = (float)numericUpDown2.Value;
+                    float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                    vrezTime = Convert.ToSingle(textBox6.Text);
 
-                cuttingTime = (cuttingPerimeter / cuttingSpeed) + (nvrez * Convert.ToSingle(textBox6.Text));
-                textBox3.Text = Convert.ToString(cuttingTime);
+                    cuttingTime = Convert.ToSingle(((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)) * 1.3);
+                    textBox3.Text = Convert.ToString(cuttingTime);
+                }
+                else
+                {
+                    float cuttingPerimeter = (float)numericUpDown1.Value;
+                    float nvrez = (float)numericUpDown2.Value;
+                    float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                    vrezTime = Convert.ToSingle(textBox6.Text);
+
+                    cuttingTime = (cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime);
+                    textBox3.Text = Convert.ToString(cuttingTime);
+                }
             }
 
             if (!String.IsNullOrEmpty(textBox9.Text) && !String.IsNullOrEmpty(textBox10.Text))
@@ -613,10 +684,10 @@ namespace Norms
                 float vrez_time = Convert.ToSingle(textBox10.Text);
                 float vrez_speed = Convert.ToSingle(textBox9.Text);
 
-                float smallCuttingTime = (per / vrez_speed) + (vrez_count * vrez_time);
-                aveCuttingTime = cuttingTime + smallCuttingTime;
-            }
+                smallCuttingTime = Convert.ToSingle(((per / (vrez_speed * 1000)) + (vrez_count * vrez_time)) * 1.3);
 
+            }
+            float aveCuttingTime = cuttingTime + smallCuttingTime;
             return aveCuttingTime;
         }
 
@@ -640,21 +711,64 @@ namespace Norms
             textBox3.Text = Convert.ToString(CalculateSmallConture());
         }
 
+        private void NumericUpDown7_TextChanged(object sender, EventArgs e)
+        {
+            textBox3.Text = CalculateProbivka().ToString();
+            if (Convert.ToString(numericUpDown7.Value) == string.Empty)
+            {
+                numericUpDown7.Value = 0;
+            }
+        }
+
+        private void NumericUpDown8_TextChanged(object sender, EventArgs e)
+        {
+            textBox3.Text = CalculateProbivka().ToString();
+            if (Convert.ToString(numericUpDown8.Value) == string.Empty)
+            {
+                numericUpDown8.Value = 0;
+            }
+        }
+
         private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            listBox1.Items.Clear();
             LoadMaterials();
-
             string material = comboBox1.Text;
             string ticknessString = comboBox2.Text;
             GetInformationAboutCutting(material, ticknessString);
+
+            if (comboBox5.Text != "600")
+            {
+                groupBox3.Visible = true;
+                groupBox4.Visible = false;
+                checkBox6.Visible = false;
+            }
+            else if (comboBox5.Text == "600")
+            {
+                groupBox3.Visible = false;
+                groupBox4.Visible = true;
+                checkBox6.Visible = true;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            float OsnTime = Convert.ToSingle(textBox3.Text);
-            DopTime dt = new DopTime(OsnTime);
-            dt.Show();
+            float OsnTime = 0f;
+
+            if (comboBox5.Text != "600")
+            {
+                if (!String.IsNullOrEmpty(textBox2.Text))
+                {
+                    OsnTime = Convert.ToSingle(textBox2.Text);
+                }
+                DopTime dt = new DopTime(OsnTime);
+                dt.Show();
+            }
+            else
+            {
+                Stanok600 st600 = new Stanok600();
+                st600.Show();
+            }
         }
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
@@ -724,6 +838,118 @@ namespace Norms
             {
                 listBox1.Items.RemoveAt(listBox1.SelectedIndex);
             }
+        }
+
+        private float CalculateProbivka()
+        {
+            float cuttingTime = 0f;
+            float returnedSum = 0f;
+
+            if (!String.IsNullOrEmpty(comboBox3.Text) && !String.IsNullOrEmpty(textBox5.Text) &&
+                !String.IsNullOrEmpty(textBox6.Text) && !String.IsNullOrEmpty(Convert.ToString(numericUpDown1.Value)) &&
+                !String.IsNullOrEmpty(Convert.ToString(numericUpDown2.Value)))
+            {
+                float cuttingPerimeter = (float)numericUpDown1.Value;
+                float nvrez = (float)numericUpDown2.Value;
+                float cuttingSpeed = float.Parse(textBox5.Text, CultureInfo.InvariantCulture.NumberFormat);
+
+                cuttingTime = (cuttingPerimeter / cuttingSpeed) + (nvrez * Convert.ToSingle(textBox6.Text));
+            }
+
+            if (!String.IsNullOrEmpty(comboBox4.Text) && !String.IsNullOrEmpty(comboBox6.Text))
+            {
+                float nOne = Convert.ToSingle(numericUpDown7.Value);
+                float nTwo = Convert.ToSingle(numericUpDown8.Value);
+                float vOne = Convert.ToSingle(comboBox4.Text);
+                float vTwo = Convert.ToSingle(comboBox6.Text);
+                float nRezb = Convert.ToSingle(numericUpDown9.Value);
+
+                float sum = nOne / vOne + nTwo / vTwo;
+                float aveSum;
+                if (numericUpDown9.Value != 0)
+                {
+                    float rezb = Convert.ToSingle(nRezb * 0.11);
+                    aveSum = sum + rezb;
+                }
+                else
+                {
+                    aveSum = sum;
+                }
+
+                returnedSum = aveSum + cuttingTime;
+            }
+
+            return returnedSum;
+        }
+
+        private void numericUpDown7_ValueChanged(object sender, EventArgs e)
+        {
+            textBox3.Text = CalculateProbivka().ToString();
+            if (Convert.ToString(numericUpDown7.Value) == string.Empty)
+            {
+                numericUpDown7.Value = 0;
+            }
+        }
+
+        private void numericUpDown8_ValueChanged(object sender, EventArgs e)
+        {
+            textBox3.Text = CalculateProbivka().ToString();
+            if (Convert.ToString(numericUpDown8.Value) == string.Empty)
+            {
+                numericUpDown8.Value = 0;
+            }
+        }
+
+        private void numericUpDown9_ValueChanged(object sender, EventArgs e)
+        {
+            textBox3.Text = CalculateProbivka().ToString();
+            if (Convert.ToString(numericUpDown9.Value) == string.Empty)
+            {
+                numericUpDown9.Value = 0;
+            }
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBox6.Checked)
+            {
+                CuttingCalcution();
+            }
+            else
+            {
+                textBox3.Text = Convert.ToString(CalculateProbivka() + 0.08);
+            }
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            textBox3.Text = CalculateProbivka().ToString();
+        }
+
+        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            textBox3.Text = CalculateProbivka().ToString();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            string input = textBox3.Text;
+
+            if (double.TryParse(input, out double number))
+            {
+                double roundedValue = Math.Round(number, 2);
+                textBox3.Text = roundedValue.ToString();
+            }
+        }
+
+        private void checkBox7_CheckedChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }

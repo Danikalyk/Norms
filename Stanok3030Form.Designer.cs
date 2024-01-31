@@ -44,34 +44,30 @@
             numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             checkBox2 = new System.Windows.Forms.CheckBox();
             checkBox1 = new System.Windows.Forms.CheckBox();
+            label12 = new System.Windows.Forms.Label();
             checkBox3 = new System.Windows.Forms.CheckBox();
             label5 = new System.Windows.Forms.Label();
             textBox3 = new System.Windows.Forms.TextBox();
             groupBox2 = new System.Windows.Forms.GroupBox();
+            checkBox6 = new System.Windows.Forms.CheckBox();
             textBox1 = new System.Windows.Forms.TextBox();
             comboBox3 = new System.Windows.Forms.ComboBox();
             checkBox4 = new System.Windows.Forms.CheckBox();
-            button2 = new System.Windows.Forms.Button();
-            textBox11 = new System.Windows.Forms.TextBox();
             textBox10 = new System.Windows.Forms.TextBox();
             textBox9 = new System.Windows.Forms.TextBox();
             label11 = new System.Windows.Forms.Label();
             label10 = new System.Windows.Forms.Label();
-            label9 = new System.Windows.Forms.Label();
             label8 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
-            textBox7 = new System.Windows.Forms.TextBox();
             textBox6 = new System.Windows.Forms.TextBox();
+            button1 = new System.Windows.Forms.Button();
             textBox5 = new System.Windows.Forms.TextBox();
             groupBox3 = new System.Windows.Forms.GroupBox();
             radioButton3 = new System.Windows.Forms.RadioButton();
             radioButton1 = new System.Windows.Forms.RadioButton();
             radioButton2 = new System.Windows.Forms.RadioButton();
-            button1 = new System.Windows.Forms.Button();
-            linkLabel1 = new System.Windows.Forms.LinkLabel();
             comboBox5 = new System.Windows.Forms.ComboBox();
-            label12 = new System.Windows.Forms.Label();
             button3 = new System.Windows.Forms.Button();
             listBox1 = new System.Windows.Forms.ListBox();
             button4 = new System.Windows.Forms.Button();
@@ -80,6 +76,15 @@
             button6 = new System.Windows.Forms.Button();
             button7 = new System.Windows.Forms.Button();
             button8 = new System.Windows.Forms.Button();
+            groupBox4 = new System.Windows.Forms.GroupBox();
+            numericUpDown9 = new System.Windows.Forms.NumericUpDown();
+            comboBox6 = new System.Windows.Forms.ComboBox();
+            comboBox4 = new System.Windows.Forms.ComboBox();
+            label14 = new System.Windows.Forms.Label();
+            numericUpDown8 = new System.Windows.Forms.NumericUpDown();
+            numericUpDown7 = new System.Windows.Forms.NumericUpDown();
+            label13 = new System.Windows.Forms.Label();
+            label9 = new System.Windows.Forms.Label();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
@@ -89,6 +94,10 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
+            groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown9).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown8).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown7).BeginInit();
             SuspendLayout();
             // 
             // comboBox1
@@ -160,6 +169,7 @@
             groupBox1.Controls.Add(checkBox1);
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(label4);
+            groupBox1.Controls.Add(label12);
             groupBox1.Controls.Add(comboBox1);
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label1);
@@ -207,11 +217,9 @@
             // 
             numericUpDown4.Location = new System.Drawing.Point(193, 169);
             numericUpDown4.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown4.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown4.Name = "numericUpDown4";
             numericUpDown4.Size = new System.Drawing.Size(72, 27);
             numericUpDown4.TabIndex = 13;
-            numericUpDown4.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown4.Visible = false;
             numericUpDown4.ValueChanged += numericUpDown4_ValueChanged;
             // 
@@ -219,11 +227,9 @@
             // 
             numericUpDown3.Location = new System.Drawing.Point(193, 122);
             numericUpDown3.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown3.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
             numericUpDown3.Size = new System.Drawing.Size(72, 27);
             numericUpDown3.TabIndex = 12;
-            numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown3.Visible = false;
             numericUpDown3.ValueChanged += numericUpDown3_ValueChanged;
             // 
@@ -253,7 +259,7 @@
             // checkBox2
             // 
             checkBox2.AutoSize = true;
-            checkBox2.Location = new System.Drawing.Point(248, 77);
+            checkBox2.Location = new System.Drawing.Point(248, 75);
             checkBox2.Name = "checkBox2";
             checkBox2.Size = new System.Drawing.Size(94, 24);
             checkBox2.TabIndex = 9;
@@ -272,6 +278,15 @@
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new System.Drawing.Point(186, -2);
+            label12.Name = "label12";
+            label12.Size = new System.Drawing.Size(60, 20);
+            label12.TabIndex = 15;
+            label12.Text = "Станок:";
+            // 
             // checkBox3
             // 
             checkBox3.AutoSize = true;
@@ -289,7 +304,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new System.Drawing.Font("Segoe UI", 19.8000011F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            label5.Location = new System.Drawing.Point(12, 268);
+            label5.Location = new System.Drawing.Point(0, 239);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(103, 46);
             label5.TabIndex = 8;
@@ -297,35 +312,46 @@
             // 
             // textBox3
             // 
-            textBox3.Location = new System.Drawing.Point(111, 284);
+            textBox3.Location = new System.Drawing.Point(91, 251);
             textBox3.Name = "textBox3";
             textBox3.ReadOnly = true;
             textBox3.Size = new System.Drawing.Size(150, 27);
             textBox3.TabIndex = 9;
+            textBox3.TextChanged += textBox3_TextChanged;
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(checkBox6);
             groupBox2.Controls.Add(textBox1);
             groupBox2.Controls.Add(comboBox3);
             groupBox2.Controls.Add(checkBox4);
-            groupBox2.Controls.Add(button2);
-            groupBox2.Controls.Add(textBox11);
             groupBox2.Controls.Add(textBox10);
             groupBox2.Controls.Add(textBox9);
             groupBox2.Controls.Add(label11);
             groupBox2.Controls.Add(label10);
-            groupBox2.Controls.Add(label9);
             groupBox2.Controls.Add(label8);
             groupBox2.Controls.Add(label7);
             groupBox2.Controls.Add(label6);
-            groupBox2.Controls.Add(textBox7);
             groupBox2.Controls.Add(textBox6);
+            groupBox2.Controls.Add(button1);
             groupBox2.Controls.Add(textBox5);
             groupBox2.Location = new System.Drawing.Point(366, 12);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new System.Drawing.Size(304, 210);
             groupBox2.TabIndex = 10;
             groupBox2.TabStop = false;
+            groupBox2.Enter += groupBox2_Enter;
+            // 
+            // checkBox6
+            // 
+            checkBox6.AutoSize = true;
+            checkBox6.Location = new System.Drawing.Point(6, 150);
+            checkBox6.Name = "checkBox6";
+            checkBox6.Size = new System.Drawing.Size(285, 24);
+            checkBox6.TabIndex = 18;
+            checkBox6.Text = "Удаление в лоток (от 200 до 470 мм)";
+            checkBox6.UseVisualStyleBackColor = true;
+            checkBox6.CheckedChanged += checkBox6_CheckedChanged;
             // 
             // textBox1
             // 
@@ -351,33 +377,13 @@
             checkBox4.AutoSize = true;
             checkBox4.Checked = true;
             checkBox4.CheckState = System.Windows.Forms.CheckState.Checked;
-            checkBox4.Location = new System.Drawing.Point(118, 181);
+            checkBox4.Location = new System.Drawing.Point(6, 183);
             checkBox4.Name = "checkBox4";
             checkBox4.Size = new System.Drawing.Size(118, 24);
             checkBox4.TabIndex = 15;
             checkBox4.Text = "Авто-режим";
             checkBox4.UseVisualStyleBackColor = true;
             checkBox4.CheckedChanged += checkBox4_CheckedChanged;
-            // 
-            // button2
-            // 
-            button2.Location = new System.Drawing.Point(0, 181);
-            button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(112, 29);
-            button2.TabIndex = 14;
-            button2.Text = "Сменить газ";
-            button2.UseVisualStyleBackColor = true;
-            button2.Visible = false;
-            button2.Click += button2_Click;
-            // 
-            // textBox11
-            // 
-            textBox11.Location = new System.Drawing.Point(246, 150);
-            textBox11.Name = "textBox11";
-            textBox11.ReadOnly = true;
-            textBox11.Size = new System.Drawing.Size(54, 27);
-            textBox11.TabIndex = 13;
-            textBox11.Visible = false;
             // 
             // textBox10
             // 
@@ -416,16 +422,6 @@
             label10.TabIndex = 8;
             label10.Text = "Большой контур";
             // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new System.Drawing.Point(-2, 153);
-            label9.Name = "label9";
-            label9.Size = new System.Drawing.Size(112, 20);
-            label9.TabIndex = 7;
-            label9.Text = "ШИРИНА РЕЗА";
-            label9.Visible = false;
-            // 
             // label8
             // 
             label8.AutoSize = true;
@@ -454,15 +450,6 @@
             label6.TabIndex = 4;
             label6.Text = "ГАЗ";
             // 
-            // textBox7
-            // 
-            textBox7.Location = new System.Drawing.Point(118, 150);
-            textBox7.Name = "textBox7";
-            textBox7.ReadOnly = true;
-            textBox7.Size = new System.Drawing.Size(125, 27);
-            textBox7.TabIndex = 3;
-            textBox7.Visible = false;
-            // 
             // textBox6
             // 
             textBox6.Location = new System.Drawing.Point(118, 117);
@@ -472,6 +459,17 @@
             textBox6.TabIndex = 2;
             textBox6.TextChanged += textBox6_TextChanged;
             textBox6.KeyPress += textBox6_KeyPress;
+            // 
+            // button1
+            // 
+            button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            button1.Location = new System.Drawing.Point(231, 174);
+            button1.Name = "button1";
+            button1.Size = new System.Drawing.Size(73, 34);
+            button1.TabIndex = 12;
+            button1.Text = "T всп";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // textBox5
             // 
@@ -488,7 +486,7 @@
             groupBox3.Controls.Add(radioButton3);
             groupBox3.Controls.Add(radioButton1);
             groupBox3.Controls.Add(radioButton2);
-            groupBox3.Location = new System.Drawing.Point(428, 228);
+            groupBox3.Location = new System.Drawing.Point(464, 225);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new System.Drawing.Size(150, 94);
             groupBox3.TabIndex = 11;
@@ -531,50 +529,19 @@
             radioButton2.UseVisualStyleBackColor = true;
             radioButton2.CheckedChanged += radioButton2_CheckedChanged;
             // 
-            // button1
-            // 
-            button1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            button1.Location = new System.Drawing.Point(328, 266);
-            button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(94, 45);
-            button1.TabIndex = 12;
-            button1.Text = "T всп";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
-            // linkLabel1
-            // 
-            linkLabel1.AutoSize = true;
-            linkLabel1.Location = new System.Drawing.Point(230, 240);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new System.Drawing.Size(92, 40);
-            linkLabel1.TabIndex = 13;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "Открыть\r\nсправочник";
-            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
-            // 
             // comboBox5
             // 
             comboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             comboBox5.FormattingEnabled = true;
-            comboBox5.Location = new System.Drawing.Point(78, 245);
+            comboBox5.Location = new System.Drawing.Point(269, 5);
             comboBox5.Name = "comboBox5";
             comboBox5.Size = new System.Drawing.Size(146, 28);
             comboBox5.TabIndex = 14;
             comboBox5.SelectedIndexChanged += comboBox5_SelectedIndexChanged;
             // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Location = new System.Drawing.Point(12, 250);
-            label12.Name = "label12";
-            label12.Size = new System.Drawing.Size(60, 20);
-            label12.TabIndex = 15;
-            label12.Text = "Станок:";
-            // 
             // button3
             // 
-            button3.Location = new System.Drawing.Point(268, 283);
+            button3.Location = new System.Drawing.Point(247, 251);
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(47, 29);
             button3.TabIndex = 16;
@@ -586,14 +553,14 @@
             // 
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 20;
-            listBox1.Location = new System.Drawing.Point(690, 12);
+            listBox1.Location = new System.Drawing.Point(690, 9);
             listBox1.Name = "listBox1";
             listBox1.Size = new System.Drawing.Size(150, 204);
             listBox1.TabIndex = 17;
             // 
             // button4
             // 
-            button4.Location = new System.Drawing.Point(690, 222);
+            button4.Location = new System.Drawing.Point(690, 225);
             button4.Name = "button4";
             button4.Size = new System.Drawing.Size(73, 29);
             button4.TabIndex = 18;
@@ -603,7 +570,7 @@
             // 
             // button5
             // 
-            button5.Location = new System.Drawing.Point(769, 222);
+            button5.Location = new System.Drawing.Point(769, 225);
             button5.Name = "button5";
             button5.Size = new System.Drawing.Size(71, 29);
             button5.TabIndex = 19;
@@ -613,7 +580,7 @@
             // 
             // textBox2
             // 
-            textBox2.Location = new System.Drawing.Point(690, 295);
+            textBox2.Location = new System.Drawing.Point(690, 298);
             textBox2.Name = "textBox2";
             textBox2.ReadOnly = true;
             textBox2.Size = new System.Drawing.Size(150, 27);
@@ -622,7 +589,7 @@
             // 
             // button6
             // 
-            button6.Location = new System.Drawing.Point(690, 260);
+            button6.Location = new System.Drawing.Point(690, 263);
             button6.Name = "button6";
             button6.Size = new System.Drawing.Size(150, 29);
             button6.TabIndex = 21;
@@ -632,9 +599,9 @@
             // 
             // button7
             // 
-            button7.Location = new System.Drawing.Point(584, 244);
+            button7.Location = new System.Drawing.Point(620, 228);
             button7.Name = "button7";
-            button7.Size = new System.Drawing.Size(86, 29);
+            button7.Size = new System.Drawing.Size(52, 29);
             button7.TabIndex = 22;
             button7.Text = ">>>";
             button7.UseVisualStyleBackColor = true;
@@ -642,32 +609,122 @@
             // 
             // button8
             // 
-            button8.Location = new System.Drawing.Point(584, 281);
+            button8.Location = new System.Drawing.Point(620, 263);
             button8.Name = "button8";
-            button8.Size = new System.Drawing.Size(86, 29);
+            button8.Size = new System.Drawing.Size(52, 29);
             button8.TabIndex = 23;
             button8.Text = "<<<";
             button8.UseVisualStyleBackColor = true;
             button8.Click += button8_Click;
+            // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(numericUpDown9);
+            groupBox4.Controls.Add(comboBox6);
+            groupBox4.Controls.Add(comboBox4);
+            groupBox4.Controls.Add(label14);
+            groupBox4.Controls.Add(numericUpDown8);
+            groupBox4.Controls.Add(numericUpDown7);
+            groupBox4.Controls.Add(label13);
+            groupBox4.Controls.Add(label9);
+            groupBox4.Location = new System.Drawing.Point(354, 225);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new System.Drawing.Size(212, 103);
+            groupBox4.TabIndex = 24;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "600L";
+            // 
+            // numericUpDown9
+            // 
+            numericUpDown9.Location = new System.Drawing.Point(135, 41);
+            numericUpDown9.Name = "numericUpDown9";
+            numericUpDown9.Size = new System.Drawing.Size(65, 27);
+            numericUpDown9.TabIndex = 7;
+            numericUpDown9.ValueChanged += numericUpDown9_ValueChanged;
+            // 
+            // comboBox6
+            // 
+            comboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboBox6.FormattingEnabled = true;
+            comboBox6.Items.AddRange(new object[] { "50", "80", "100", "150", "200", "250", "300" });
+            comboBox6.Location = new System.Drawing.Point(77, 69);
+            comboBox6.Name = "comboBox6";
+            comboBox6.Size = new System.Drawing.Size(52, 28);
+            comboBox6.TabIndex = 6;
+            comboBox6.SelectedIndexChanged += comboBox6_SelectedIndexChanged;
+            // 
+            // comboBox4
+            // 
+            comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Items.AddRange(new object[] { "50", "80", "100", "150", "200", "250", "300" });
+            comboBox4.Location = new System.Drawing.Point(77, 39);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new System.Drawing.Size(52, 28);
+            comboBox4.TabIndex = 5;
+            comboBox4.SelectedIndexChanged += comboBox4_SelectedIndexChanged;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new System.Drawing.Point(136, 18);
+            label14.Name = "label14";
+            label14.Size = new System.Drawing.Size(65, 20);
+            label14.TabIndex = 2;
+            label14.Text = "N резьб";
+            // 
+            // numericUpDown8
+            // 
+            numericUpDown8.Location = new System.Drawing.Point(6, 67);
+            numericUpDown8.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numericUpDown8.Name = "numericUpDown8";
+            numericUpDown8.Size = new System.Drawing.Size(65, 27);
+            numericUpDown8.TabIndex = 4;
+            numericUpDown8.ValueChanged += numericUpDown8_ValueChanged;
+            // 
+            // numericUpDown7
+            // 
+            numericUpDown7.Location = new System.Drawing.Point(6, 40);
+            numericUpDown7.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numericUpDown7.Name = "numericUpDown7";
+            numericUpDown7.Size = new System.Drawing.Size(65, 27);
+            numericUpDown7.TabIndex = 3;
+            numericUpDown7.ValueChanged += numericUpDown7_ValueChanged;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new System.Drawing.Point(72, 20);
+            label13.Name = "label13";
+            label13.Size = new System.Drawing.Size(58, 20);
+            label13.TabIndex = 1;
+            label13.Text = "V проб";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new System.Drawing.Point(6, 20);
+            label9.Name = "label9";
+            label9.Size = new System.Drawing.Size(60, 20);
+            label9.TabIndex = 0;
+            label9.Text = "N проб";
             // 
             // Stanok3030Form
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(682, 323);
-            Controls.Add(button8);
-            Controls.Add(button7);
+            Controls.Add(groupBox4);
             Controls.Add(button6);
-            Controls.Add(textBox2);
-            Controls.Add(button5);
             Controls.Add(button4);
             Controls.Add(listBox1);
-            Controls.Add(button3);
-            Controls.Add(label12);
-            Controls.Add(comboBox5);
-            Controls.Add(linkLabel1);
-            Controls.Add(button1);
+            Controls.Add(button5);
+            Controls.Add(textBox2);
             Controls.Add(groupBox3);
+            Controls.Add(button8);
+            Controls.Add(button7);
+            Controls.Add(button3);
+            Controls.Add(comboBox5);
             Controls.Add(groupBox2);
             Controls.Add(textBox3);
             Controls.Add(label5);
@@ -694,6 +751,11 @@
             groupBox2.PerformLayout();
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown9).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown8).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown7).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -713,7 +775,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -724,13 +785,10 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.NumericUpDown numericUpDown5;
         private System.Windows.Forms.NumericUpDown numericUpDown4;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
@@ -738,7 +796,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.NumericUpDown numericUpDown6;
         private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.ComboBox comboBox5;
         private System.Windows.Forms.Label label12;
@@ -752,5 +809,15 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.NumericUpDown numericUpDown8;
+        private System.Windows.Forms.NumericUpDown numericUpDown7;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.NumericUpDown numericUpDown9;
+        private System.Windows.Forms.CheckBox checkBox6;
     }
 }
