@@ -13,14 +13,17 @@ namespace Norms
         private void button1_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Stanok3030Form s3030 = new Stanok3030Form();
+            Stanok3030Form s3030 = new Stanok3030Form("3030");
             s3030.Owner = this;
             s3030.ShowDialog();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            Stanok3030Form s3030 = new Stanok3030Form("600");
+            s3030.Owner = this;
+            s3030.ShowDialog();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -30,7 +33,10 @@ namespace Norms
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            Stanok3030Form s3030 = new Stanok3030Form("5030");
+            s3030.Owner = this;
+            s3030.ShowDialog();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -40,7 +46,10 @@ namespace Norms
 
         private void button11_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            Stanok3030Form s3030 = new Stanok3030Form("AXEL");
+            s3030.Owner = this;
+            s3030.ShowDialog();
         }
 
         private void bindingSource1_CurrentChanged(object sender, EventArgs e)
@@ -65,6 +74,11 @@ namespace Norms
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }

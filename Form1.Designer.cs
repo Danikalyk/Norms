@@ -76,6 +76,7 @@
             // 
             // button4
             // 
+            button4.Enabled = false;
             button4.Location = new System.Drawing.Point(408, 181);
             button4.Name = "button4";
             button4.Size = new System.Drawing.Size(195, 115);
@@ -86,6 +87,7 @@
             // 
             // button5
             // 
+            button5.Enabled = false;
             button5.Location = new System.Drawing.Point(408, 61);
             button5.Name = "button5";
             button5.Size = new System.Drawing.Size(195, 115);
@@ -96,15 +98,17 @@
             // 
             // button6
             // 
+            button6.BackgroundImage = Properties.Resources.paint_roller;
+            button6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             button6.Location = new System.Drawing.Point(6, 5);
             button6.Name = "button6";
             button6.Size = new System.Drawing.Size(61, 50);
             button6.TabIndex = 6;
-            button6.Text = "button6";
             button6.UseVisualStyleBackColor = true;
             // 
             // button7
             // 
+            button7.Enabled = false;
             button7.Location = new System.Drawing.Point(73, 5);
             button7.Name = "button7";
             button7.Size = new System.Drawing.Size(61, 50);
@@ -114,6 +118,7 @@
             // 
             // button8
             // 
+            button8.Enabled = false;
             button8.Location = new System.Drawing.Point(140, 5);
             button8.Name = "button8";
             button8.Size = new System.Drawing.Size(61, 50);
@@ -123,6 +128,7 @@
             // 
             // button9
             // 
+            button9.Enabled = false;
             button9.Location = new System.Drawing.Point(207, 5);
             button9.Name = "button9";
             button9.Size = new System.Drawing.Size(61, 50);
@@ -132,6 +138,7 @@
             // 
             // button10
             // 
+            button10.Enabled = false;
             button10.Location = new System.Drawing.Point(274, 5);
             button10.Name = "button10";
             button10.Size = new System.Drawing.Size(61, 50);
@@ -145,7 +152,7 @@
             button11.Name = "button11";
             button11.Size = new System.Drawing.Size(195, 115);
             button11.TabIndex = 11;
-            button11.Text = "Axel";
+            button11.Text = "AXEL";
             button11.UseVisualStyleBackColor = true;
             button11.Click += button11_Click;
             // 
@@ -157,7 +164,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            BackColor = System.Drawing.Color.White;
+            BackColor = System.Drawing.Color.SteelBlue;
             ClientSize = new System.Drawing.Size(617, 308);
             Controls.Add(button11);
             Controls.Add(button10);
@@ -177,6 +184,7 @@
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             FormClosing += Form1_FormClosing;
             FormClosed += Form1_FormClosed;
+            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)bindingSource1).EndInit();
             ResumeLayout(false);
         }

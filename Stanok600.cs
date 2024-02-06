@@ -18,7 +18,6 @@ namespace Norms
         private float Calculate600DopTime()
         {
             float listProgrammTime = 0f;
-            float aveTime = 0f;
             float listTime = 0f;
             float programmTime = 0f;
 
@@ -101,22 +100,22 @@ namespace Norms
 
             if (comboBox3.Text == "Сталь")
             {
-                if(numericUpDown8.Value >= 2000)
+                if (numericUpDown8.Value >= 2000)
                 {
                     oneTime = Convert.ToInt32(numericUpDown8.Value / 2000 * 1);
                 }
-                if(numericUpDown9.Value >= 2000)
+                if (numericUpDown9.Value >= 2000)
                 {
                     twoTime = Convert.ToInt32(numericUpDown8.Value / 2000 * 1);
                 }
-                if(numericUpDown10.Value >= 2000)
+                if (numericUpDown10.Value >= 2000)
                 {
                     threeTime = Convert.ToInt32(numericUpDown8.Value / 2000 * 1);
                 }
 
                 zatochkaTime = oneTime + twoTime + threeTime;
             }
-            else if(comboBox3.Text == "Нержавейка")
+            else if (comboBox3.Text == "Нержавейка")
             {
                 if (numericUpDown8.Value >= 1000)
                 {
@@ -133,7 +132,7 @@ namespace Norms
 
                 zatochkaTime = oneTime + twoTime + threeTime;
             }
-            else if(comboBox3.Text == "Алюминий")
+            else if (comboBox3.Text == "Алюминий")
             {
                 if (numericUpDown8.Value >= 2000)
                 {
@@ -342,29 +341,29 @@ namespace Norms
 
         private void numericUpDown7_ValueChanged(object sender, System.EventArgs e)
         {
-            
-                if (numericUpDown7.Value == 2)
+
+            if (numericUpDown7.Value == 2)
+            {
+                if (checkBox6.Checked)
+                    numericUpDown9.Visible = true;
+            }
+            if (numericUpDown7.Value >= 3)
+            {
+                if (checkBox6.Checked)
                 {
-                    if(checkBox6.Checked)
-                        numericUpDown9.Visible = true;
+                    numericUpDown9.Visible = true;
+                    numericUpDown10.Visible = true;
                 }
-                if (numericUpDown7.Value >= 3)
-                {
-                    if (checkBox6.Checked)
-                    {
-                        numericUpDown9.Visible = true;
-                        numericUpDown10.Visible = true;
-                    }
-                }
-                if(numericUpDown7.Value < 2)
-                {
-                    numericUpDown9.Visible = false;
-                    numericUpDown10.Visible = false;
-                }
-                if (numericUpDown7.Value < 3)
-                {
-                    numericUpDown10.Visible = false;
-                }
+            }
+            if (numericUpDown7.Value < 2)
+            {
+                numericUpDown9.Visible = false;
+                numericUpDown10.Visible = false;
+            }
+            if (numericUpDown7.Value < 3)
+            {
+                numericUpDown10.Visible = false;
+            }
 
             textBox1.Text = AverengeTime().ToString();
         }
@@ -419,7 +418,7 @@ namespace Norms
                 numericUpDown9.Visible = false;
                 numericUpDown10.Visible = false;
             }
-            if(numericUpDown7.Value < 3)
+            if (numericUpDown7.Value < 3)
             {
                 numericUpDown10.Visible = false;
             }

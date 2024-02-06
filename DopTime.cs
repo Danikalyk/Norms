@@ -34,7 +34,7 @@ namespace Norms
             numericUpDown1.TextChanged += NumericUpDown1_TextChanged;
 #pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
 #pragma warning disable CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
-            numericUpDown2.TextChanged += NumericUpDown1_TextChanged;
+            numericUpDown2.TextChanged += NumericUpDown2_TextChanged;
 #pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
 #pragma warning disable CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
             numericUpDown3.TextChanged += NumericUpDown3_TextChanged;

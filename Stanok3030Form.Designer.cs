@@ -109,6 +109,7 @@
             comboBox1.Size = new System.Drawing.Size(204, 28);
             comboBox1.TabIndex = 0;
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            comboBox1.KeyDown += Control_KeyDown;
             // 
             // label1
             // 
@@ -130,13 +131,15 @@
             // 
             // comboBox2
             // 
-            comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             comboBox2.FormattingEnabled = true;
             comboBox2.Location = new System.Drawing.Point(99, 73);
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new System.Drawing.Size(88, 28);
-            comboBox2.TabIndex = 3;
+            comboBox2.TabIndex = 1;
             comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
+            comboBox2.TextChanged += comboBox2_TextChanged;
+            comboBox2.KeyDown += Control_KeyDown;
+            comboBox2.KeyPress += comboBox2_KeyPress;
             // 
             // label3
             // 
@@ -187,6 +190,7 @@
             checkBox5.Name = "checkBox5";
             checkBox5.Size = new System.Drawing.Size(155, 24);
             checkBox5.TabIndex = 16;
+            checkBox5.TabStop = false;
             checkBox5.Text = "Поверх всех окон";
             checkBox5.UseVisualStyleBackColor = true;
             checkBox5.CheckedChanged += checkBox5_CheckedChanged;
@@ -194,29 +198,27 @@
             // numericUpDown6
             // 
             numericUpDown6.Location = new System.Drawing.Point(273, 169);
-            numericUpDown6.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown6.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown6.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
             numericUpDown6.Name = "numericUpDown6";
             numericUpDown6.Size = new System.Drawing.Size(69, 27);
             numericUpDown6.TabIndex = 15;
-            numericUpDown6.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown6.Visible = false;
+            numericUpDown6.ValueChanged += numericUpDown6_ValueChanged;
             // 
             // numericUpDown5
             // 
             numericUpDown5.Location = new System.Drawing.Point(273, 122);
             numericUpDown5.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown5.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown5.Name = "numericUpDown5";
             numericUpDown5.Size = new System.Drawing.Size(69, 27);
             numericUpDown5.TabIndex = 14;
-            numericUpDown5.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown5.Visible = false;
+            numericUpDown5.ValueChanged += numericUpDown5_ValueChanged;
             // 
             // numericUpDown4
             // 
             numericUpDown4.Location = new System.Drawing.Point(193, 169);
-            numericUpDown4.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown4.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
             numericUpDown4.Name = "numericUpDown4";
             numericUpDown4.Size = new System.Drawing.Size(72, 27);
             numericUpDown4.TabIndex = 13;
@@ -226,7 +228,7 @@
             // numericUpDown3
             // 
             numericUpDown3.Location = new System.Drawing.Point(193, 122);
-            numericUpDown3.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown3.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
             numericUpDown3.Size = new System.Drawing.Size(72, 27);
             numericUpDown3.TabIndex = 12;
@@ -236,24 +238,22 @@
             // numericUpDown2
             // 
             numericUpDown2.Location = new System.Drawing.Point(99, 169);
-            numericUpDown2.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown2.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown2.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
             numericUpDown2.Name = "numericUpDown2";
             numericUpDown2.Size = new System.Drawing.Size(88, 27);
-            numericUpDown2.TabIndex = 11;
-            numericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown2.TabIndex = 3;
             numericUpDown2.ValueChanged += numericUpDown2_ValueChanged;
+            numericUpDown2.KeyDown += Control_KeyDown;
             // 
             // numericUpDown1
             // 
             numericUpDown1.Location = new System.Drawing.Point(99, 122);
-            numericUpDown1.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown1.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new System.Drawing.Size(88, 27);
-            numericUpDown1.TabIndex = 10;
-            numericUpDown1.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown1.TabIndex = 2;
             numericUpDown1.ValueChanged += numericUpDown1_ValueChanged;
+            numericUpDown1.KeyDown += Control_KeyDown;
             numericUpDown1.Validating += numericUpDown1_Validating;
             // 
             // checkBox2
@@ -263,6 +263,7 @@
             checkBox2.Name = "checkBox2";
             checkBox2.Size = new System.Drawing.Size(94, 24);
             checkBox2.TabIndex = 9;
+            checkBox2.TabStop = false;
             checkBox2.Text = "Разметка";
             checkBox2.UseVisualStyleBackColor = true;
             checkBox2.CheckedChanged += checkBox2_CheckedChanged;
@@ -270,10 +271,11 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new System.Drawing.Point(193, 77);
+            checkBox1.Location = new System.Drawing.Point(193, 75);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new System.Drawing.Size(53, 24);
             checkBox1.TabIndex = 8;
+            checkBox1.TabStop = false;
             checkBox1.Text = "МК";
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
@@ -296,6 +298,7 @@
             checkBox3.Name = "checkBox3";
             checkBox3.Size = new System.Drawing.Size(146, 24);
             checkBox3.TabIndex = 7;
+            checkBox3.TabStop = false;
             checkBox3.Text = "Большой контур";
             checkBox3.UseVisualStyleBackColor = true;
             checkBox3.CheckedChanged += checkBox3_CheckedChanged;
@@ -317,6 +320,7 @@
             textBox3.ReadOnly = true;
             textBox3.Size = new System.Drawing.Size(150, 27);
             textBox3.TabIndex = 9;
+            textBox3.TabStop = false;
             textBox3.TextChanged += textBox3_TextChanged;
             // 
             // groupBox2
@@ -349,6 +353,7 @@
             checkBox6.Name = "checkBox6";
             checkBox6.Size = new System.Drawing.Size(285, 24);
             checkBox6.TabIndex = 18;
+            checkBox6.TabStop = false;
             checkBox6.Text = "Удаление в лоток (от 200 до 470 мм)";
             checkBox6.UseVisualStyleBackColor = true;
             checkBox6.CheckedChanged += checkBox6_CheckedChanged;
@@ -360,6 +365,7 @@
             textBox1.ReadOnly = true;
             textBox1.Size = new System.Drawing.Size(54, 27);
             textBox1.TabIndex = 17;
+            textBox1.TabStop = false;
             textBox1.Visible = false;
             // 
             // comboBox3
@@ -370,6 +376,7 @@
             comboBox3.Name = "comboBox3";
             comboBox3.Size = new System.Drawing.Size(127, 28);
             comboBox3.TabIndex = 16;
+            comboBox3.TabStop = false;
             comboBox3.SelectedIndexChanged += comboBox3_SelectedIndexChanged;
             // 
             // checkBox4
@@ -381,6 +388,7 @@
             checkBox4.Name = "checkBox4";
             checkBox4.Size = new System.Drawing.Size(118, 24);
             checkBox4.TabIndex = 15;
+            checkBox4.TabStop = false;
             checkBox4.Text = "Авто-режим";
             checkBox4.UseVisualStyleBackColor = true;
             checkBox4.CheckedChanged += checkBox4_CheckedChanged;
@@ -392,7 +400,9 @@
             textBox10.ReadOnly = true;
             textBox10.Size = new System.Drawing.Size(54, 27);
             textBox10.TabIndex = 12;
+            textBox10.TabStop = false;
             textBox10.Visible = false;
+            textBox10.TextChanged += textBox10_TextChanged;
             // 
             // textBox9
             // 
@@ -401,7 +411,9 @@
             textBox9.ReadOnly = true;
             textBox9.Size = new System.Drawing.Size(54, 27);
             textBox9.TabIndex = 11;
+            textBox9.TabStop = false;
             textBox9.Visible = false;
+            textBox9.TextChanged += textBox9_TextChanged;
             // 
             // label11
             // 
@@ -457,6 +469,7 @@
             textBox6.ReadOnly = true;
             textBox6.Size = new System.Drawing.Size(125, 27);
             textBox6.TabIndex = 2;
+            textBox6.TabStop = false;
             textBox6.TextChanged += textBox6_TextChanged;
             textBox6.KeyPress += textBox6_KeyPress;
             // 
@@ -467,6 +480,7 @@
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(73, 34);
             button1.TabIndex = 12;
+            button1.TabStop = false;
             button1.Text = "T всп";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
@@ -478,6 +492,7 @@
             textBox5.ReadOnly = true;
             textBox5.Size = new System.Drawing.Size(125, 27);
             textBox5.TabIndex = 1;
+            textBox5.TabStop = false;
             textBox5.TextChanged += textBox5_TextChanged;
             textBox5.KeyPress += textBox5_KeyPress;
             // 
@@ -500,7 +515,6 @@
             radioButton3.Name = "radioButton3";
             radioButton3.Size = new System.Drawing.Size(130, 24);
             radioButton3.TabIndex = 13;
-            radioButton3.TabStop = true;
             radioButton3.Text = "Минимальная";
             radioButton3.UseVisualStyleBackColor = true;
             radioButton3.CheckedChanged += radioButton3_CheckedChanged;
@@ -512,7 +526,6 @@
             radioButton1.Name = "radioButton1";
             radioButton1.Size = new System.Drawing.Size(134, 24);
             radioButton1.TabIndex = 11;
-            radioButton1.TabStop = true;
             radioButton1.Text = "Максимальная";
             radioButton1.UseVisualStyleBackColor = true;
             radioButton1.CheckedChanged += radioButton1_CheckedChanged;
@@ -524,7 +537,6 @@
             radioButton2.Name = "radioButton2";
             radioButton2.Size = new System.Drawing.Size(89, 24);
             radioButton2.TabIndex = 12;
-            radioButton2.TabStop = true;
             radioButton2.Text = "Средняя";
             radioButton2.UseVisualStyleBackColor = true;
             radioButton2.CheckedChanged += radioButton2_CheckedChanged;
@@ -537,6 +549,7 @@
             comboBox5.Name = "comboBox5";
             comboBox5.Size = new System.Drawing.Size(146, 28);
             comboBox5.TabIndex = 14;
+            comboBox5.TabStop = false;
             comboBox5.SelectedIndexChanged += comboBox5_SelectedIndexChanged;
             // 
             // button3
@@ -545,6 +558,7 @@
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(47, 29);
             button3.TabIndex = 16;
+            button3.TabStop = false;
             button3.Text = "+";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
@@ -603,6 +617,7 @@
             button7.Name = "button7";
             button7.Size = new System.Drawing.Size(52, 29);
             button7.TabIndex = 22;
+            button7.TabStop = false;
             button7.Text = ">>>";
             button7.UseVisualStyleBackColor = true;
             button7.Click += button7_Click;
@@ -613,6 +628,7 @@
             button8.Name = "button8";
             button8.Size = new System.Drawing.Size(52, 29);
             button8.TabIndex = 23;
+            button8.TabStop = false;
             button8.Text = "<<<";
             button8.UseVisualStyleBackColor = true;
             button8.Click += button8_Click;
@@ -627,7 +643,7 @@
             groupBox4.Controls.Add(numericUpDown7);
             groupBox4.Controls.Add(label13);
             groupBox4.Controls.Add(label9);
-            groupBox4.Location = new System.Drawing.Point(354, 225);
+            groupBox4.Location = new System.Drawing.Point(366, 225);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new System.Drawing.Size(212, 103);
             groupBox4.TabIndex = 24;
@@ -640,6 +656,7 @@
             numericUpDown9.Name = "numericUpDown9";
             numericUpDown9.Size = new System.Drawing.Size(65, 27);
             numericUpDown9.TabIndex = 7;
+            numericUpDown9.TabStop = false;
             numericUpDown9.ValueChanged += numericUpDown9_ValueChanged;
             // 
             // comboBox6
@@ -651,6 +668,7 @@
             comboBox6.Name = "comboBox6";
             comboBox6.Size = new System.Drawing.Size(52, 28);
             comboBox6.TabIndex = 6;
+            comboBox6.TabStop = false;
             comboBox6.SelectedIndexChanged += comboBox6_SelectedIndexChanged;
             // 
             // comboBox4
@@ -662,6 +680,7 @@
             comboBox4.Name = "comboBox4";
             comboBox4.Size = new System.Drawing.Size(52, 28);
             comboBox4.TabIndex = 5;
+            comboBox4.TabStop = false;
             comboBox4.SelectedIndexChanged += comboBox4_SelectedIndexChanged;
             // 
             // label14
@@ -680,6 +699,7 @@
             numericUpDown8.Name = "numericUpDown8";
             numericUpDown8.Size = new System.Drawing.Size(65, 27);
             numericUpDown8.TabIndex = 4;
+            numericUpDown8.TabStop = false;
             numericUpDown8.ValueChanged += numericUpDown8_ValueChanged;
             // 
             // numericUpDown7
@@ -689,6 +709,7 @@
             numericUpDown7.Name = "numericUpDown7";
             numericUpDown7.Size = new System.Drawing.Size(65, 27);
             numericUpDown7.TabIndex = 3;
+            numericUpDown7.TabStop = false;
             numericUpDown7.ValueChanged += numericUpDown7_ValueChanged;
             // 
             // label13
@@ -713,7 +734,8 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(682, 323);
+            BackColor = System.Drawing.Color.SteelBlue;
+            ClientSize = new System.Drawing.Size(682, 331);
             Controls.Add(groupBox4);
             Controls.Add(button6);
             Controls.Add(button4);
@@ -739,6 +761,7 @@
             FormClosing += Stanok3030Form_FormClosing;
             FormClosed += Stanok3030Form_FormClosed;
             Load += Stanok3030Form_Load;
+            KeyDown += Stanok3030Form_KeyDown;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).EndInit();
