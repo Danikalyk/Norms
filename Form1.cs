@@ -28,7 +28,10 @@ namespace Norms
 
         private void button5_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            Stanok3030Form s3030 = new Stanok3030Form("ГАР");
+            s3030.Owner = this;
+            s3030.ShowDialog();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -81,6 +84,14 @@ namespace Norms
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            PaintingForm paint = new PaintingForm();
+            paint.Owner = this;
+            paint.ShowDialog();
         }
     }
 }

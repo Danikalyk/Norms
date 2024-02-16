@@ -486,5 +486,10 @@ namespace Norms
         {
 
         }
+
+        private void Stanok600_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            config.openedWindows -= 1;
+        }
     }
 }

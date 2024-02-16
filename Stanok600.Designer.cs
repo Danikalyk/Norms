@@ -377,6 +377,7 @@
             Name = "Stanok600";
             ShowIcon = false;
             Text = "Расчёт добавочного времени резки на станок Trumatic 600L";
+            FormClosing += Stanok600_FormClosing;
             Load += Stanok600_Load;
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();

@@ -49,6 +49,7 @@
             label5 = new System.Windows.Forms.Label();
             textBox3 = new System.Windows.Forms.TextBox();
             groupBox2 = new System.Windows.Forms.GroupBox();
+            checkBox7 = new System.Windows.Forms.CheckBox();
             checkBox6 = new System.Windows.Forms.CheckBox();
             textBox1 = new System.Windows.Forms.TextBox();
             comboBox3 = new System.Windows.Forms.ComboBox();
@@ -325,6 +326,7 @@
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(checkBox7);
             groupBox2.Controls.Add(checkBox6);
             groupBox2.Controls.Add(textBox1);
             groupBox2.Controls.Add(comboBox3);
@@ -345,6 +347,18 @@
             groupBox2.TabIndex = 10;
             groupBox2.TabStop = false;
             groupBox2.Enter += groupBox2_Enter;
+            // 
+            // checkBox7
+            // 
+            checkBox7.AutoSize = true;
+            checkBox7.Location = new System.Drawing.Point(6, 150);
+            checkBox7.Name = "checkBox7";
+            checkBox7.Size = new System.Drawing.Size(148, 24);
+            checkBox7.TabIndex = 19;
+            checkBox7.Text = "Сложный контур";
+            checkBox7.UseVisualStyleBackColor = true;
+            checkBox7.Visible = false;
+            checkBox7.CheckedChanged += checkBox7_CheckedChanged_1;
             // 
             // checkBox6
             // 
@@ -842,5 +856,6 @@
         private System.Windows.Forms.ComboBox comboBox6;
         private System.Windows.Forms.NumericUpDown numericUpDown9;
         private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.CheckBox checkBox7;
     }
 }

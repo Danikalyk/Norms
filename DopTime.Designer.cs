@@ -260,7 +260,7 @@
             // numericUpDown4
             // 
             numericUpDown4.Location = new System.Drawing.Point(147, 55);
-            numericUpDown4.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown4.Maximum = new decimal(new int[] { 12000, 0, 0, 0 });
             numericUpDown4.Name = "numericUpDown4";
             numericUpDown4.Size = new System.Drawing.Size(110, 27);
             numericUpDown4.TabIndex = 20;
@@ -270,7 +270,7 @@
             // numericUpDown3
             // 
             numericUpDown3.Location = new System.Drawing.Point(147, 20);
-            numericUpDown3.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown3.Maximum = new decimal(new int[] { 12000, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
             numericUpDown3.Size = new System.Drawing.Size(110, 27);
             numericUpDown3.TabIndex = 19;
@@ -366,11 +366,13 @@
             Controls.Add(checkBox1);
             Controls.Add(label2);
             Controls.Add(label1);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "DopTime";
             ShowIcon = false;
             Text = "Расчёт вспомогательного времени";
+            FormClosing += DopTime_FormClosing;
             Load += DopTime_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();

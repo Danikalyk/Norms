@@ -286,5 +286,10 @@ namespace Norms
         {
             textBox4.Text = Convert.ToString(CalculateMetallWeight());
         }
+
+        private void DopTime_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            config.openedWindows -= 1;
+        }
     }
 }

@@ -50,7 +50,7 @@
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(195, 115);
             button1.TabIndex = 1;
-            button1.Text = "3030\r\n5030\r\nAXEL\r\n600";
+            button1.Text = "3030 5030\r\nAXEL 600\r\n   ГАР";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -87,12 +87,11 @@
             // 
             // button5
             // 
-            button5.Enabled = false;
             button5.Location = new System.Drawing.Point(408, 61);
             button5.Name = "button5";
             button5.Size = new System.Drawing.Size(195, 115);
             button5.TabIndex = 5;
-            button5.Text = "V130";
+            button5.Text = "ГАР";
             button5.UseVisualStyleBackColor = true;
             button5.Click += button5_Click;
             // 
@@ -105,6 +104,7 @@
             button6.Size = new System.Drawing.Size(61, 50);
             button6.TabIndex = 6;
             button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
             // 
             // button7
             // 

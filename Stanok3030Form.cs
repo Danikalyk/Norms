@@ -14,6 +14,8 @@ namespace Norms
         private string _selectedStanok;
         private float _razmIncuttingTime;
         private float _razmCuttingSpeed;
+        public int openedWindows = 0;
+        private bool _listPanelEnabled = false;
 
         public Stanok3030Form(string stanok)
         {
@@ -55,37 +57,10 @@ namespace Norms
 
         private void GetStanok(string stanok)
         {
-            if (stanok == "3030")
+            int index = comboBox5.FindStringExact(stanok);
+            if (index != -1)
             {
-                int index = comboBox5.FindStringExact(stanok);
-                if (index != -1)
-                {
-                    comboBox5.SelectedIndex = index;
-                }
-            }
-            else if (stanok == "5030")
-            {
-                int index = comboBox5.FindStringExact(stanok);
-                if (index != -1)
-                {
-                    comboBox5.SelectedIndex = index;
-                }
-            }
-            else if (stanok == "AXEL")
-            {
-                int index = comboBox5.FindStringExact(stanok);
-                if (index != -1)
-                {
-                    comboBox5.SelectedIndex = index;
-                }
-            }
-            else if (stanok == "600")
-            {
-                int index = comboBox5.FindStringExact(stanok);
-                if (index != -1)
-                {
-                    comboBox5.SelectedIndex = index;
-                }
+                comboBox5.SelectedIndex = index;
             }
         }
 
@@ -149,13 +124,37 @@ namespace Norms
             {
                 if (comboBox3.Text != "Воздух")
                 {
-                    float cuttingPerimeter = (float)numericUpDown1.Value;
-                    float nvrez = (float)numericUpDown2.Value;
-                    float cuttingSpeed = Convert.ToSingle(textBox5.Text);
-                    float vrezTime = Convert.ToSingle(textBox6.Text);
+                    if (comboBox5.Text == "600")
+                    {
+                        float cuttingPerimeter = (float)numericUpDown1.Value;
+                        float nvrez = (float)numericUpDown2.Value;
+                        float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                        float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                    cuttingTime = Convert.ToSingle(((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)) * 1.3);
-                    textBox3.Text = Convert.ToString(cuttingTime);
+                        cuttingTime = (cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime);
+                    }
+                    else if (comboBox5.Text == "ГАР")
+                    {
+                        float cuttingPerimeter = (float)numericUpDown1.Value;
+                        //float nvrez = (float)numericUpDown2.Value;
+                        float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                        //float vrezTime = Convert.ToSingle(textBox6.Text);
+
+                        if(!checkBox7.Checked)
+                            cuttingTime = (cuttingPerimeter / cuttingSpeed);
+                        else
+                            cuttingTime = (cuttingPerimeter / (cuttingSpeed * 0.75f));
+                    }
+                    else
+                    {
+                        float cuttingPerimeter = (float)numericUpDown1.Value;
+                        float nvrez = (float)numericUpDown2.Value;
+                        float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                        float vrezTime = Convert.ToSingle(textBox6.Text);
+
+                        cuttingTime = Convert.ToSingle(((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)) * 1.3);
+                        textBox3.Text = Convert.ToString(cuttingTime);
+                    }
                 }
                 else
                 {
@@ -166,6 +165,8 @@ namespace Norms
 
                     cuttingTime = (cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime);
                 }
+
+
             }
 
             float cutting;
@@ -303,6 +304,8 @@ namespace Norms
             numericUpDown7.TextChanged += NumericUpDown7_TextChanged;
             numericUpDown8.TextChanged += NumericUpDown8_TextChanged;
             numericUpDown9.TextChanged += NumericUpDown9_TextChanged;
+            button7.Click += IncreaseButton_Click;
+            button8.Click += DecreaseButton_Click;
 #pragma warning restore CS8622 // Допустимость значений NULL для ссылочных типов в типе параметра не соответствует целевому объекту делегирования (возможно, из-за атрибутов допустимости значений NULL).
 
             numericUpDown1.Enter += new EventHandler(numericUpDown_Enter);
@@ -317,7 +320,7 @@ namespace Norms
             comboBox4.SelectedIndex = 0;
             comboBox6.SelectedIndex = 0;
 
-            if (comboBox5.Text == "3030" || comboBox5.Text == "5030" || comboBox5.Text == "AXEL")
+            if (comboBox5.Text == "3030" || comboBox5.Text == "5030" || comboBox5.Text == "AXEL" || comboBox5.Text == "ГАР")
             {
                 groupBox3.Visible = true;
                 groupBox4.Visible = false;
@@ -872,12 +875,24 @@ namespace Norms
 
             if (!String.IsNullOrEmpty(textBox9.Text) && !String.IsNullOrEmpty(textBox10.Text))
             {
-                int per = Convert.ToInt32(numericUpDown3.Value);
-                int vrez_count = Convert.ToInt32(numericUpDown4.Value);
-                float vrez_time = Convert.ToSingle(textBox10.Text);
-                float vrez_speed = Convert.ToSingle(textBox9.Text);
+                if (comboBox5.Text == "ГАР" || comboBox5.Text == "600")
+                {
+                    int per = Convert.ToInt32(numericUpDown3.Value);
+                    int vrez_count = Convert.ToInt32(numericUpDown4.Value);
+                    float vrez_time = Convert.ToSingle(textBox10.Text);
+                    float vrez_speed = Convert.ToSingle(textBox9.Text);
 
-                smallCuttingTime = Convert.ToSingle(((per / (vrez_speed * 1000)) + (vrez_count * vrez_time)) * 1.3);
+                    smallCuttingTime = Convert.ToSingle((per / (vrez_speed * 1000)) + (vrez_count * vrez_time));
+                }
+                else
+                {
+                    int per = Convert.ToInt32(numericUpDown3.Value);
+                    int vrez_count = Convert.ToInt32(numericUpDown4.Value);
+                    float vrez_time = Convert.ToSingle(textBox10.Text);
+                    float vrez_speed = Convert.ToSingle(textBox9.Text);
+
+                    smallCuttingTime = Convert.ToSingle(((per / (vrez_speed * 1000)) + (vrez_count * vrez_time)) * 1.3);
+                }
 
             }
             return smallCuttingTime;
@@ -934,7 +949,7 @@ namespace Norms
                 groupBox4.Visible = false;
                 checkBox6.Visible = false;
             }
-            else if (comboBox5.Text == "600")
+            else
             {
                 groupBox3.Visible = false;
                 groupBox4.Visible = true;
@@ -949,25 +964,35 @@ namespace Norms
             {
                 checkBox2.Text = "Разметка";
             }
+
+            if (comboBox5.Text == "ГАР")
+                checkBox7.Visible = true;
+            else
+                checkBox7.Visible = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             float OsnTime = 0f;
 
-            if (comboBox5.Text != "600")
+            if (config.openedWindows < 2)
             {
-                if (!String.IsNullOrEmpty(textBox2.Text))
+                if (comboBox5.Text != "600")
                 {
-                    OsnTime = Convert.ToSingle(textBox2.Text);
+                    if (!String.IsNullOrEmpty(textBox2.Text))
+                    {
+                        OsnTime = Convert.ToSingle(textBox2.Text);
+                    }
+                    DopTime dt = new DopTime(OsnTime);
+                    dt.Show();
                 }
-                DopTime dt = new DopTime(OsnTime);
-                dt.Show();
-            }
-            else
-            {
-                Stanok600 st600 = new Stanok600();
-                st600.Show();
+                else
+                {
+                    Stanok600 st600 = new Stanok600();
+                    st600.Show();
+                }
+
+                config.openedWindows += 1;
             }
         }
 
@@ -1022,14 +1047,36 @@ namespace Norms
 
         private void button7_Click(object sender, EventArgs e)
         {
-            this.Width = 870;
-            this.Height = 370;
+
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-            this.Width = 700;
-            this.Height = 370;
+
+        }
+
+        private void IncreaseButton_Click(object sender, EventArgs e)
+        {
+            if (!_listPanelEnabled)
+            {
+                ResizeForm(1.25); // увеличиваем на 10%
+                _listPanelEnabled = true;
+            }
+        }
+
+        private void DecreaseButton_Click(object sender, EventArgs e)
+        {
+            if (_listPanelEnabled)
+            {
+                ResizeForm(0.8); // уменьшаем на 10%
+                _listPanelEnabled = false;
+            }
+        }
+
+        private void ResizeForm(double factor)
+        {
+            // Изменяем размер формы, используя процентное соотношение
+            this.Width = (int)(this.Width * factor);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -1188,6 +1235,11 @@ namespace Norms
         }
 
         private void numericUpDown6_ValueChanged(object sender, EventArgs e)
+        {
+            CuttingCalcution();
+        }
+
+        private void checkBox7_CheckedChanged_1(object sender, EventArgs e)
         {
             CuttingCalcution();
         }
