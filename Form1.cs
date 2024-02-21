@@ -44,7 +44,10 @@ namespace Norms
 
         private void button4_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            Stanok3030Form s3030 = new Stanok3030Form("IGNIUS");
+            s3030.Owner = this;
+            s3030.ShowDialog();
         }
 
         private void button11_Click(object sender, EventArgs e)

@@ -40,7 +40,7 @@ namespace Norms
                 MessageBox.Show("Код ошибки: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            radioButton1.Checked = true;
+            radioButton3.Checked = true;
 
             navigationControls.Add(this.comboBox1);
             navigationControls.Add(this.comboBox2);
@@ -78,6 +78,34 @@ namespace Norms
             }
         }
 
+        private void Control_KeyDownMK(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Предотвратить звук динга
+                MoveToNextControl(sender, false);
+            }
+            else if (e.KeyCode == Keys.ControlKey)
+            {
+                e.SuppressKeyPress = true;
+                MoveToNextControl(sender, true);
+            }
+        }
+
+        private void Control_KeyDownRazm(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Предотвратить звук динга
+                MoveToNextControl(sender, false);
+            }
+            else if (e.KeyCode == Keys.ControlKey)
+            {
+                e.SuppressKeyPress = true;
+                MoveToNextControl(sender, true);
+            }
+        }
+
         private void MoveToNextControl(object sender, bool reverse)
         {
             Control? currentControl = sender as Control;
@@ -95,13 +123,9 @@ namespace Norms
                     {
                         nextControl.Select();
                         // Выделение текста, если элемент управления - текстовое поле
-                        if (nextControl is System.Windows.Forms.TextBox textBox)
+                        if (nextControl is TextBox textBox)
                         {
                             textBox.SelectAll();
-                        }
-                        else if (nextControl is NumericUpDown numericUpDown)
-                        {
-
                         }
                     }
                 }
@@ -124,7 +148,7 @@ namespace Norms
             {
                 if (comboBox3.Text != "Воздух")
                 {
-                    if (comboBox5.Text == "600")
+                    if (comboBox5.Text == "600" || comboBox5.Text == "IGNIUS")
                     {
                         float cuttingPerimeter = (float)numericUpDown1.Value;
                         float nvrez = (float)numericUpDown2.Value;
@@ -140,7 +164,7 @@ namespace Norms
                         float cuttingSpeed = Convert.ToSingle(textBox5.Text);
                         //float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                        if(!checkBox7.Checked)
+                        if (!checkBox7.Checked)
                             cuttingTime = (cuttingPerimeter / cuttingSpeed);
                         else
                             cuttingTime = (cuttingPerimeter / (cuttingSpeed * 0.75f));
@@ -320,7 +344,7 @@ namespace Norms
             comboBox4.SelectedIndex = 0;
             comboBox6.SelectedIndex = 0;
 
-            if (comboBox5.Text == "3030" || comboBox5.Text == "5030" || comboBox5.Text == "AXEL" || comboBox5.Text == "ГАР")
+            if (comboBox5.Text == "3030" || comboBox5.Text == "5030" || comboBox5.Text == "AXEL" || comboBox5.Text == "ГАР" || comboBox5.Text == "IGNIUS")
             {
                 groupBox3.Visible = true;
                 groupBox4.Visible = false;
@@ -503,8 +527,6 @@ namespace Norms
                 DR2.Close();
                 comboBox2.SelectedIndex = 0;
             }
-            //GetSmallConturInfo();
-            //GetRazmetkaData();
         }
         //смена толщины
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -647,7 +669,7 @@ namespace Norms
                 float per = (float)numericUpDown5.Value;
                 float vrezCount = (float)numericUpDown6.Value;
                 float vrezSpeed = (float)0.00025;
-                float vrezTime = (float)0.05;
+                float vrezTime = (float)0.02;
 
                 razmTime = (per * vrezSpeed) + (vrezCount * vrezTime);
             }
@@ -680,7 +702,6 @@ namespace Norms
 
                 numericUpDown5.TabStop = true;
                 numericUpDown6.TabStop = true;
-
                 CuttingCalcution();
             }
             else
@@ -1137,14 +1158,7 @@ namespace Norms
 
         private void checkBox6_CheckedChanged(object sender, EventArgs e)
         {
-            if (!checkBox6.Checked)
-            {
-                CuttingCalcution();
-            }
-            else
-            {
-                CuttingCalcution();
-            }
+            CuttingCalcution();
         }
 
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)

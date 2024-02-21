@@ -205,6 +205,7 @@
             numericUpDown6.TabIndex = 15;
             numericUpDown6.Visible = false;
             numericUpDown6.ValueChanged += numericUpDown6_ValueChanged;
+            numericUpDown6.KeyDown += Control_KeyDownRazm;
             // 
             // numericUpDown5
             // 
@@ -215,6 +216,7 @@
             numericUpDown5.TabIndex = 14;
             numericUpDown5.Visible = false;
             numericUpDown5.ValueChanged += numericUpDown5_ValueChanged;
+            numericUpDown5.KeyDown += Control_KeyDownRazm;
             // 
             // numericUpDown4
             // 
@@ -225,6 +227,7 @@
             numericUpDown4.TabIndex = 13;
             numericUpDown4.Visible = false;
             numericUpDown4.ValueChanged += numericUpDown4_ValueChanged;
+            numericUpDown4.KeyDown += Control_KeyDownMK;
             // 
             // numericUpDown3
             // 
@@ -235,6 +238,7 @@
             numericUpDown3.TabIndex = 12;
             numericUpDown3.Visible = false;
             numericUpDown3.ValueChanged += numericUpDown3_ValueChanged;
+            numericUpDown3.KeyDown += Control_KeyDownMK;
             // 
             // numericUpDown2
             // 
@@ -525,10 +529,12 @@
             // radioButton3
             // 
             radioButton3.AutoSize = true;
+            radioButton3.Checked = true;
             radioButton3.Location = new System.Drawing.Point(10, 64);
             radioButton3.Name = "radioButton3";
             radioButton3.Size = new System.Drawing.Size(130, 24);
             radioButton3.TabIndex = 13;
+            radioButton3.TabStop = true;
             radioButton3.Text = "Минимальная";
             radioButton3.UseVisualStyleBackColor = true;
             radioButton3.CheckedChanged += radioButton3_CheckedChanged;

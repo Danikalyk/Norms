@@ -1,10 +1,8 @@
 ﻿using System;
+using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Data;
 
 namespace Norms
 {
@@ -13,11 +11,11 @@ namespace Norms
         private float _firstCoef = 0f;
         private float _secondCoef = 0f;
         private float _nextCoef = 0f;
-        float protirkaSalfSmochRastvr = 0f;
-        float protirkaSuhSalf = 0f;
-        float obduvkaVozduh = 0f;
-        float struinObmiv = 0f;
-        DataSet ds = new DataSet();
+        private float protirkaSalfSmochRastvr = 0f;
+        private float protirkaSuhSalf = 0f;
+        private float obduvkaVozduh = 0f;
+        private float struinObmiv = 0f;
+        private DataSet ds = new DataSet();
         public PaintingForm()
         {
             InitializeComponent();
@@ -140,7 +138,7 @@ namespace Norms
         private void GetInformationAboutPodgotovka()
         {
             string sqlQuery = $"SELECT OPERATIONS.OPERATION_NAME as 'Оперция', COMPLEXITY_GROUPS.NUMBER_OF_GROUP as 'Группа', PLOSHADOBRABOTKI.DIAPOSON as 'Диапозон', PROTIRKASALFRASTVOR.OPER_TIME 'Время', PROTIRKASALFRASTVOR.STEPEN as 'Степень', " +
-                $"PROTIRKASALFRASTVOR.VNUTR_POVERHN as 'Время внутр', PROTIRKASALFRASTVOR.STEPEN_VNUTR as 'Степень внунтр' FROM COMPLEXITY_GROUPS INNER JOIN PROTIRKASALFRASTVOR ON COMPLEXITY_GROUPS.ID = PROTIRKASALFRASTVOR.COM_GROUP INNER JOIN " +
+                $"PROTIRKASALFRASTVOR.VNUTR_POVERHN as 'Время внутр', PROTIRKASALFRASTVOR.STEPEN_VNUTR as 'Степень внутр' FROM COMPLEXITY_GROUPS INNER JOIN PROTIRKASALFRASTVOR ON COMPLEXITY_GROUPS.ID = PROTIRKASALFRASTVOR.COM_GROUP INNER JOIN " +
                 $"PLOSHADOBRABOTKI ON PROTIRKASALFRASTVOR.DIAPOSON = PLOSHADOBRABOTKI.ID INNER JOIN OPERATIONS ON PROTIRKASALFRASTVOR.OPERATION = OPERATIONS.ID";
             using SqlConnection connection = new SqlConnection(config._connectionString);
             connection.Open();
@@ -401,11 +399,11 @@ namespace Norms
             {
 
             }
-            if(checkBox4.Checked)
+            if (checkBox4.Checked)
             {
 
             }
-            if(checkBox5.Checked)
+            if (checkBox5.Checked)
             {
 
             }
@@ -417,7 +415,12 @@ namespace Norms
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void bindingSource1_CurrentChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
