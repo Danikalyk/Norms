@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             button1 = new System.Windows.Forms.Button();
             button2 = new System.Windows.Forms.Button();
             button3 = new System.Windows.Forms.Button();
@@ -40,8 +39,7 @@
             button9 = new System.Windows.Forms.Button();
             button10 = new System.Windows.Forms.Button();
             button11 = new System.Windows.Forms.Button();
-            bindingSource1 = new System.Windows.Forms.BindingSource(components);
-            ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
+            label1 = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
             // button1
@@ -137,13 +135,14 @@
             // 
             // button10
             // 
-            button10.Enabled = false;
+            button10.BackgroundImage = Properties.Resources.cog;
+            button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             button10.Location = new System.Drawing.Point(274, 5);
             button10.Name = "button10";
             button10.Size = new System.Drawing.Size(61, 50);
             button10.TabIndex = 10;
-            button10.Text = "button10";
             button10.UseVisualStyleBackColor = true;
+            button10.Click += button10_Click;
             // 
             // button11
             // 
@@ -155,9 +154,15 @@
             button11.UseVisualStyleBackColor = true;
             button11.Click += button11_Click;
             // 
-            // bindingSource1
+            // label1
             // 
-            bindingSource1.CurrentChanged += bindingSource1_CurrentChanged;
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(526, 5);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(79, 20);
+            label1.TabIndex = 12;
+            label1.Text = "by Nevelin";
+            label1.Click += label1_Click;
             // 
             // Form1
             // 
@@ -165,6 +170,7 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.SteelBlue;
             ClientSize = new System.Drawing.Size(617, 308);
+            Controls.Add(label1);
             Controls.Add(button11);
             Controls.Add(button10);
             Controls.Add(button9);
@@ -184,8 +190,8 @@
             FormClosing += Form1_FormClosing;
             FormClosed += Form1_FormClosed;
             Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)bindingSource1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -200,6 +206,6 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
-        private System.Windows.Forms.BindingSource bindingSource1;
+        private System.Windows.Forms.Label label1;
     }
 }

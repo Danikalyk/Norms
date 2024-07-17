@@ -5,6 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>9743bee3-7dfc-4ccf-9e12-43696631d31a-_1_.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,11 +33,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="9743bee3-7dfc-4ccf-9e12-43696631d31a-_1_.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="C:\Users\t018\source\repos\Norms\.editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.4" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
   </ItemGroup>
 
   <ItemGroup>

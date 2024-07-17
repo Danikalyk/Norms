@@ -86,6 +86,7 @@
             numericUpDown7 = new System.Windows.Forms.NumericUpDown();
             label13 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
+            checkBox8 = new System.Windows.Forms.CheckBox();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
@@ -198,24 +199,26 @@
             // 
             // numericUpDown6
             // 
+            numericUpDown6.Enabled = false;
             numericUpDown6.Location = new System.Drawing.Point(273, 169);
-            numericUpDown6.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            numericUpDown6.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             numericUpDown6.Name = "numericUpDown6";
             numericUpDown6.Size = new System.Drawing.Size(69, 27);
             numericUpDown6.TabIndex = 15;
             numericUpDown6.Visible = false;
-            numericUpDown6.ValueChanged += numericUpDown6_ValueChanged;
+            numericUpDown6.ValueChanged += numericUpDown_ValueChanged;
             numericUpDown6.KeyDown += Control_KeyDownRazm;
             // 
             // numericUpDown5
             // 
+            numericUpDown5.Enabled = false;
             numericUpDown5.Location = new System.Drawing.Point(273, 122);
-            numericUpDown5.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown5.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             numericUpDown5.Name = "numericUpDown5";
             numericUpDown5.Size = new System.Drawing.Size(69, 27);
             numericUpDown5.TabIndex = 14;
             numericUpDown5.Visible = false;
-            numericUpDown5.ValueChanged += numericUpDown5_ValueChanged;
+            numericUpDown5.ValueChanged += numericUpDown_ValueChanged;
             numericUpDown5.KeyDown += Control_KeyDownRazm;
             // 
             // numericUpDown4
@@ -226,7 +229,7 @@
             numericUpDown4.Size = new System.Drawing.Size(72, 27);
             numericUpDown4.TabIndex = 13;
             numericUpDown4.Visible = false;
-            numericUpDown4.ValueChanged += numericUpDown4_ValueChanged;
+            numericUpDown4.ValueChanged += numericUpDown_ValueChanged;
             numericUpDown4.KeyDown += Control_KeyDownMK;
             // 
             // numericUpDown3
@@ -237,17 +240,19 @@
             numericUpDown3.Size = new System.Drawing.Size(72, 27);
             numericUpDown3.TabIndex = 12;
             numericUpDown3.Visible = false;
-            numericUpDown3.ValueChanged += numericUpDown3_ValueChanged;
+            numericUpDown3.ValueChanged += numericUpDown_ValueChanged;
             numericUpDown3.KeyDown += Control_KeyDownMK;
             // 
             // numericUpDown2
             // 
             numericUpDown2.Location = new System.Drawing.Point(99, 169);
             numericUpDown2.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            numericUpDown2.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown2.Name = "numericUpDown2";
             numericUpDown2.Size = new System.Drawing.Size(88, 27);
             numericUpDown2.TabIndex = 3;
-            numericUpDown2.ValueChanged += numericUpDown2_ValueChanged;
+            numericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown2.ValueChanged += numericUpDown_ValueChanged;
             numericUpDown2.KeyDown += Control_KeyDown;
             // 
             // numericUpDown1
@@ -257,7 +262,7 @@
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new System.Drawing.Size(88, 27);
             numericUpDown1.TabIndex = 2;
-            numericUpDown1.ValueChanged += numericUpDown1_ValueChanged;
+            numericUpDown1.ValueChanged += numericUpDown_ValueChanged;
             numericUpDown1.KeyDown += Control_KeyDown;
             numericUpDown1.Validating += numericUpDown1_Validating;
             // 
@@ -355,11 +360,14 @@
             // checkBox7
             // 
             checkBox7.AutoSize = true;
+            checkBox7.Checked = true;
+            checkBox7.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkBox7.Enabled = false;
             checkBox7.Location = new System.Drawing.Point(6, 150);
             checkBox7.Name = "checkBox7";
-            checkBox7.Size = new System.Drawing.Size(148, 24);
+            checkBox7.Size = new System.Drawing.Size(182, 24);
             checkBox7.TabIndex = 19;
-            checkBox7.Text = "Сложный контур";
+            checkBox7.Text = "Коэффициент T резки";
             checkBox7.UseVisualStyleBackColor = true;
             checkBox7.Visible = false;
             checkBox7.CheckedChanged += checkBox7_CheckedChanged_1;
@@ -750,12 +758,26 @@
             label9.TabIndex = 0;
             label9.Text = "N проб";
             // 
+            // checkBox8
+            // 
+            checkBox8.AutoSize = true;
+            checkBox8.Checked = true;
+            checkBox8.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkBox8.Location = new System.Drawing.Point(164, 214);
+            checkBox8.Name = "checkBox8";
+            checkBox8.Size = new System.Drawing.Size(190, 24);
+            checkBox8.TabIndex = 25;
+            checkBox8.Text = "Авто-значения в разм.";
+            checkBox8.UseVisualStyleBackColor = true;
+            checkBox8.CheckedChanged += checkBox8_CheckedChanged;
+            // 
             // Stanok3030Form
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.SteelBlue;
             ClientSize = new System.Drawing.Size(682, 331);
+            Controls.Add(checkBox8);
             Controls.Add(groupBox4);
             Controls.Add(button6);
             Controls.Add(button4);
@@ -772,12 +794,12 @@
             Controls.Add(label5);
             Controls.Add(checkBox3);
             Controls.Add(groupBox1);
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             MaximizeBox = false;
             Name = "Stanok3030Form";
             ShowIcon = false;
             StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            Text = "Расчёт основого времени резки на Trumatic L3030\\5030\\AXEL";
+            Text = "Расчёт основого времени резки";
             FormClosing += Stanok3030Form_FormClosing;
             FormClosed += Stanok3030Form_FormClosed;
             Load += Stanok3030Form_Load;
@@ -863,5 +885,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDown9;
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.CheckBox checkBox7;
+        private System.Windows.Forms.CheckBox checkBox8;
     }
 }

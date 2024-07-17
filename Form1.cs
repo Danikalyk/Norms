@@ -1,5 +1,11 @@
 ﻿using System;
+using System.Data.SQLite;
+using System.IO;
 using System.Windows.Forms;
+using Dapper;
+using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.Data;
 
 namespace Norms
 {
@@ -8,7 +14,36 @@ namespace Norms
         public Form1()
         {
             InitializeComponent();
+            //CreateDatabase();
         }
+
+        //private void CreateDatabase()
+        //{
+        //    string fileName = "GAS_CUTTING.db";
+        //    string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        //    string filePath = Path.Combine(appDataPath, fileName);
+
+        //    if (!File.Exists(filePath))
+        //    {
+        //        string databasePath = Path.Combine(appDataPath, "GAS_CUTTING.db");
+
+        //        SQLiteConnection.CreateFile(databasePath);
+        //        MessageBox.Show("База данных успешно создана!", "Внимание!", MessageBoxButtons.OK);
+
+        //        using (SQLiteConnection connection = new SQLiteConnection($"Data Source={databasePath};Version=3;"))
+        //        {
+        //            connection.Open();
+        //            using (SQLiteCommand command = new SQLiteCommand(config.createTablesSqlite, connection))
+        //            {
+        //                command.ExecuteNonQuery();
+        //                MessageBox.Show("Таблицы успешно созданы!", "Внимание!", MessageBoxButtons.OK);
+        //            }
+        //            connection.Close();
+        //        }
+
+
+        //    }
+        //}
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -95,6 +130,23 @@ namespace Norms
             PaintingForm paint = new PaintingForm();
             paint.Owner = this;
             paint.ShowDialog();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+        "Спасибо, что вы это читаете! Принимая данное соглашение вы отдаёте свою душу в полноправное пользование Лукьянову 'Nevelin' Даниле! Чтобы расторгнуть договор заполните заявление в свободной форме и передайте в течении трёх дней с даты заключения договора. В противном случае ваша душа навсегда останется в рабстве!",
+        "Сообщение",
+        MessageBoxButtons.OK,
+        MessageBoxIcon.Information);
+
+            if (result == DialogResult.OK)
+                MessageBox.Show("Договор успешно заключен!", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

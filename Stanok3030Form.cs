@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Windows.Forms;
-using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
+using SQLitePCL;
 
 namespace Norms
 {
@@ -16,6 +18,7 @@ namespace Norms
         private float _razmCuttingSpeed;
         public int openedWindows = 0;
         private bool _listPanelEnabled = false;
+        private bool _dataUpdated = false;
 
         public Stanok3030Form(string stanok)
         {
@@ -146,9 +149,66 @@ namespace Norms
                 !String.IsNullOrEmpty(textBox6.Text) && !String.IsNullOrEmpty(Convert.ToString(numericUpDown1.Value)) &&
                 !String.IsNullOrEmpty(Convert.ToString(numericUpDown2.Value)))
             {
-                if (comboBox3.Text != "Воздух")
+                if (_dataUpdated == false)
                 {
-                    if (comboBox5.Text == "600" || comboBox5.Text == "IGNIUS")
+                    if (comboBox3.Text != "Воздух")
+                    {
+                        if (comboBox5.Text == "600")
+                        {
+                            float cuttingPerimeter = (float)numericUpDown1.Value;
+                            float nvrez = (float)numericUpDown2.Value;
+                            float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                            float vrezTime = Convert.ToSingle(textBox6.Text);
+
+                            cuttingTime = (cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime);
+                        }
+                        else if (comboBox5.Text == "ГАР")
+                        {
+                            float cuttingPerimeter = (float)numericUpDown1.Value;
+                            //float nvrez = (float)numericUpDown2.Value;
+                            float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                            //float vrezTime = Convert.ToSingle(textBox6.Text);
+
+                            if (!checkBox7.Checked)
+                                cuttingTime = (cuttingPerimeter / cuttingSpeed);
+                            else
+                                cuttingTime = (cuttingPerimeter / (cuttingSpeed * 0.75f));
+                        }
+                        else if (comboBox5.Text == "IGNIUS")
+                        {
+                            float cuttingPerimeter = (float)numericUpDown1.Value;
+                            float nvrez = (float)numericUpDown2.Value;
+                            float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                            float vrezTime = Convert.ToSingle(textBox6.Text);
+
+                            cuttingTime = (cuttingPerimeter / cuttingSpeed) + (nvrez * (vrezTime / 60));
+                        }
+                        else
+                        {
+                            float cuttingPerimeter = (float)numericUpDown1.Value;
+                            float nvrez = (float)numericUpDown2.Value;
+                            float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                            float vrezTime = Convert.ToSingle(textBox6.Text);
+
+                            cuttingTime = Convert.ToSingle(((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)) * 1.3);
+                            textBox3.Text = Convert.ToString(cuttingTime);
+                        }
+                    }
+                    else
+                    {
+                        float cuttingPerimeter = (float)numericUpDown1.Value;
+                        float nvrez = (float)numericUpDown2.Value;
+                        float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                        float vrezTime = Convert.ToSingle(textBox6.Text);
+
+                        cuttingTime = (cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime);
+                    }
+
+
+                }
+                else
+                {
+                    if (comboBox5.Text == "600")
                     {
                         float cuttingPerimeter = (float)numericUpDown1.Value;
                         float nvrez = (float)numericUpDown2.Value;
@@ -168,6 +228,16 @@ namespace Norms
                             cuttingTime = (cuttingPerimeter / cuttingSpeed);
                         else
                             cuttingTime = (cuttingPerimeter / (cuttingSpeed * 0.75f));
+
+                    }
+                    else if (comboBox5.Text == "IGNIUS")
+                    {
+                        float cuttingPerimeter = (float)numericUpDown1.Value;
+                        float nvrez = (float)numericUpDown2.Value;
+                        float cuttingSpeed = Convert.ToSingle(textBox5.Text);
+                        float vrezTime = Convert.ToSingle(textBox6.Text);
+
+                        cuttingTime = (cuttingPerimeter / cuttingSpeed) + (nvrez * (vrezTime / 60));
                     }
                     else
                     {
@@ -176,22 +246,11 @@ namespace Norms
                         float cuttingSpeed = Convert.ToSingle(textBox5.Text);
                         float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                        cuttingTime = Convert.ToSingle(((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)) * 1.3);
-                        textBox3.Text = Convert.ToString(cuttingTime);
+                        cuttingTime = Convert.ToSingle(((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)));
                     }
                 }
-                else
-                {
-                    float cuttingPerimeter = (float)numericUpDown1.Value;
-                    float nvrez = (float)numericUpDown2.Value;
-                    float cuttingSpeed = Convert.ToSingle(textBox5.Text);
-                    float vrezTime = Convert.ToSingle(textBox6.Text);
-
-                    cuttingTime = (cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime);
-                }
-
-
             }
+            
 
             float cutting;
             if (checkBox3.Checked)
@@ -445,7 +504,7 @@ namespace Norms
                 string sqlQuery = $"SELECT MACHINE.SHORT_NAME as 'Станок', MATERIAL.MATERIAL_NAME as 'Металл', " +
                     $"GAS.SHORT_NAME as 'Газ', CUTTING_INFO.TICKNESS as 'Толщина', CUTTING_INFO.ttMIN_SPEED as 'Минимальная скорость', " +
                     $"CUTTING_INFO.ttAVE_SPEED as 'Средняя скорость', CUTTING_INFO.ttMAX_SPEED as 'Максимальная скорость', " +
-                    $"CUTTING_INFO.CUTTING_TIME as 'Время врезки' FROM CUTTING_INFO INNER JOIN GAS ON CUTTING_INFO.GAS = GAS.GAS_CODE " +
+                    $"CUTTING_INFO.CUTTING_TIME as 'Время врезки', CUTTING_INFO.DATA_UPDATED as 'Обновлено' FROM CUTTING_INFO INNER JOIN GAS ON CUTTING_INFO.GAS = GAS.GAS_CODE " +
                     $"INNER JOIN MACHINE ON CUTTING_INFO.MACHINE = MACHINE.MACHINE_CODE " +
                     $"INNER JOIN MATERIAL ON CUTTING_INFO.MATERIAL = MATERIAL.MATERIAL_CODE " +
                     $"WHERE MACHINE.SHORT_NAME = '{machine}' AND CUTTING_INFO.TICKNESS = {metallTickness} AND MATERIAL.MATERIAL_NAME = '{material}' AND GAS.SHORT_NAME = '{gas}'";
@@ -455,6 +514,7 @@ namespace Norms
                 {
                     _incuttingTime = Convert.ToSingle(DR["Время врезки"]);
                     textBox6.Text = _incuttingTime.ToString();
+                    _dataUpdated = Convert.ToBoolean(DR["Обновлено"]);
                 }
 
                 DR.Close();
@@ -623,7 +683,6 @@ namespace Norms
                 numericUpDown3.TabStop = true;
                 numericUpDown4.TabStop = true;
                 GetSmallConturInfo();
-                CuttingCalcution();
             }
             else if (!checkBox1.Checked)
             {
@@ -640,8 +699,9 @@ namespace Norms
 
                 numericUpDown3.TabStop = false;
                 numericUpDown4.TabStop = false;
-                CuttingCalcution();
             }
+
+            CuttingCalcution();
         }
 
         private void GetRazmetkaData()
@@ -692,9 +752,23 @@ namespace Norms
             return razmTime;
         }
 
+        private void ViparPereckid()
+        {
+            if (checkBox8.Checked)
+            {
+                decimal per = numericUpDown1.Value;
+                decimal vrezCount = numericUpDown2.Value;
+
+                numericUpDown5.Value = per;
+                numericUpDown6.Value = vrezCount;
+            }
+        }
+
         //задание разметки
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
+            ViparPereckid();
+
             if (checkBox2.Checked)
             {
                 numericUpDown5.Visible = true;
@@ -715,36 +789,21 @@ namespace Norms
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void textBox1_TextChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void textBox2_TextChanged(object sender, EventArgs e) => CuttingCalcution();
 
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e) => CuttingCalcution();
 
         private void Stanok3030Form_FormClosed(object sender, FormClosedEventArgs e)
         {
 
         }
 
-        private void Stanok3030Form_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            this.Owner.Show();
-        }
+        private void Stanok3030Form_FormClosing(object sender, FormClosingEventArgs e) => this.Owner.Show();
         //включение и отключение большого контура
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
@@ -765,6 +824,8 @@ namespace Norms
                 textBox6.Visible = false;
                 textBox3.Text = null;
             }
+
+            CuttingCalcution();
         }
         //включение и отключение авторежима
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
@@ -813,27 +874,20 @@ namespace Norms
         private void NumericUpDown1_TextChanged(object sender, EventArgs e)
         {
             CuttingCalcution();
+            ViparPereckid();
         }
 
         private void NumericUpDown2_TextChanged(object sender, EventArgs e)
         {
             CuttingCalcution();
+            ViparPereckid();
         }
 
-        private void NumericUpDown9_TextChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void NumericUpDown9_TextChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void textBox5_TextChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void textBox6_TextChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void textBox6_TextChanged(object sender, EventArgs e) => CuttingCalcution();
 
         private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -919,45 +973,23 @@ namespace Norms
             return smallCuttingTime;
         }
 
-        private void NumericUpDown3_TextChanged(object sender, EventArgs e)
+        private void numericUpDown_ValueChanged(object sender, EventArgs e)
         {
             CuttingCalcution();
+            ViparPereckid();
         }
 
-        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void NumericUpDown3_TextChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void NumericUpDown4_TextChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void NumericUpDown4_TextChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void NumericUpDown5_TextChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void NumericUpDown5_TextChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void NumericUpDown6_TextChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void NumericUpDown6_TextChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void numericUpDown4_ValueChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void NumericUpDown7_TextChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void NumericUpDown7_TextChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
-
-        private void NumericUpDown8_TextChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void NumericUpDown8_TextChanged(object sender, EventArgs e) => CuttingCalcution();
 
         private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1035,10 +1067,7 @@ namespace Norms
             listBox1.Items.Add(addedTime);
         }
 
-        private void button5_Click(object sender, EventArgs e)
-        {
-            listBox1.Items.Clear();
-        }
+        private void button5_Click(object sender, EventArgs e) => listBox1.Items.Clear();
 
         private void button6_Click(object sender, EventArgs e)
         {
@@ -1094,11 +1123,9 @@ namespace Norms
             }
         }
 
-        private void ResizeForm(double factor)
-        {
+        private void ResizeForm(double factor) =>
             // Изменяем размер формы, используя процентное соотношение
             this.Width = (int)(this.Width * factor);
-        }
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -1136,40 +1163,22 @@ namespace Norms
             return aveSum;
         }
 
-        private void numericUpDown7_ValueChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void numericUpDown7_ValueChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void numericUpDown8_ValueChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void numericUpDown8_ValueChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void numericUpDown9_ValueChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void numericUpDown9_ValueChanged(object sender, EventArgs e) => CuttingCalcution();
 
         private void groupBox2_Enter(object sender, EventArgs e)
         {
 
         }
 
-        private void checkBox6_CheckedChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void checkBox6_CheckedChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e) => CuttingCalcution();
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
@@ -1243,20 +1252,24 @@ namespace Norms
 #pragma warning restore CS8602 // Разыменование вероятной пустой ссылки.
         }
 
-        private void numericUpDown5_ValueChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void numericUpDown5_ValueChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void numericUpDown6_ValueChanged(object sender, EventArgs e)
-        {
-            CuttingCalcution();
-        }
+        private void numericUpDown6_ValueChanged(object sender, EventArgs e) => CuttingCalcution();
 
-        private void checkBox7_CheckedChanged_1(object sender, EventArgs e)
+        private void checkBox7_CheckedChanged_1(object sender, EventArgs e) => CuttingCalcution();
+
+        private void checkBox8_CheckedChanged(object sender, EventArgs e)
         {
-            CuttingCalcution();
+            if (checkBox8.Checked)
+            {
+                numericUpDown5.Enabled = false;
+                numericUpDown6.Enabled = false;
+            }
+            else
+            {
+                numericUpDown5.Enabled = true;
+                numericUpDown6.Enabled = true;
+            }
         }
     }
 }
-

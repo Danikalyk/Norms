@@ -182,6 +182,7 @@
             comboBox5.Name = "comboBox5";
             comboBox5.Size = new System.Drawing.Size(103, 28);
             comboBox5.TabIndex = 7;
+            comboBox5.SelectedIndexChanged += comboBox5_SelectedIndexChanged;
             // 
             // label16
             // 

@@ -3,6 +3,7 @@ using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace Norms
 {
@@ -16,11 +17,15 @@ namespace Norms
         private float obduvkaVozduh = 0f;
         private float struinObmiv = 0f;
         private DataSet ds = new DataSet();
+        private float protirkaSalfSmochTime = 0f;
+        private float protirkaSalfSmochStepen = 0f;
+
         public PaintingForm()
         {
             InitializeComponent();
 
             GetInformation();
+            GetInformationAboutPodgotovka();
         }
 
         private void GetInformation()
@@ -104,7 +109,7 @@ namespace Norms
                 float normsConsLkm = 100 * Convert.ToSingle(textBox6.Text) / (Convert.ToSingle(numericUpDown6.Value) * Convert.ToSingle(textBox5.Text));
                 float ploshad = Convert.ToSingle(textBox4.Text);
                 float counts = (float)numericUpDown1.Value;
-                float coef = Convert.ToSingle(textBox7.Text);
+                float coef = Convert.ToSingle(textBox7.Text) / 1000;
 
                 float sum = 0f;
                 if (counts == 1)
@@ -140,11 +145,40 @@ namespace Norms
             string sqlQuery = $"SELECT OPERATIONS.OPERATION_NAME as 'Оперция', COMPLEXITY_GROUPS.NUMBER_OF_GROUP as 'Группа', PLOSHADOBRABOTKI.DIAPOSON as 'Диапозон', PROTIRKASALFRASTVOR.OPER_TIME 'Время', PROTIRKASALFRASTVOR.STEPEN as 'Степень', " +
                 $"PROTIRKASALFRASTVOR.VNUTR_POVERHN as 'Время внутр', PROTIRKASALFRASTVOR.STEPEN_VNUTR as 'Степень внутр' FROM COMPLEXITY_GROUPS INNER JOIN PROTIRKASALFRASTVOR ON COMPLEXITY_GROUPS.ID = PROTIRKASALFRASTVOR.COM_GROUP INNER JOIN " +
                 $"PLOSHADOBRABOTKI ON PROTIRKASALFRASTVOR.DIAPOSON = PLOSHADOBRABOTKI.ID INNER JOIN OPERATIONS ON PROTIRKASALFRASTVOR.OPERATION = OPERATIONS.ID";
-            using SqlConnection connection = new SqlConnection(config._connectionString);
+            using SqlConnection connection = new(config._connectionString);
             connection.Open();
             SqlDataAdapter adapter = new(sqlQuery, connection);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            string serializedData = JsonConvert.SerializeObject(dt);
+        }
 
-            adapter.Fill(ds);
+        private void SetInformation()
+        {
+            if (checkBox2.Checked)
+            {
+
+            }
+            if (checkBox3.Checked)
+            {
+
+            }
+            if (checkBox4.Checked)
+            {
+
+            }
+            if (checkBox5.Checked)
+            {
+
+            }
+            if (!checkBox6.Checked)
+            {
+
+            }
+            if (checkBox7.Checked)
+            {
+
+            }
         }
 
         private void GetInformationAboutMaterialsCharacteristics()
@@ -395,6 +429,8 @@ namespace Norms
 
         private void CalculateTrudPodg()
         {
+            float sum = 0f;
+
             if (checkBox3.Checked)
             {
 
@@ -415,11 +451,17 @@ namespace Norms
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
-
+            SetInformation();
         }
 
         private void bindingSource1_CurrentChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //SqlDataAdapter adapter = GetInformationAboutPodgotovka();
 
         }
     }
