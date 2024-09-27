@@ -40,6 +40,7 @@
             button10 = new System.Windows.Forms.Button();
             button11 = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
+            button12 = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // button1
@@ -48,7 +49,7 @@
             button1.Name = "button1";
             button1.Size = new System.Drawing.Size(195, 115);
             button1.TabIndex = 1;
-            button1.Text = "3030 5030\r\nAXEL 600\r\nГАР IGNIUS";
+            button1.Text = "3030";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -105,38 +106,41 @@
             // 
             // button7
             // 
-            button7.Enabled = false;
+            button7.BackgroundImage = Properties.Resources.laser_burst;
+            button7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             button7.Location = new System.Drawing.Point(73, 5);
             button7.Name = "button7";
             button7.Size = new System.Drawing.Size(61, 50);
             button7.TabIndex = 7;
-            button7.Text = "button7";
             button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
             // 
             // button8
             // 
-            button8.Enabled = false;
+            button8.BackgroundImage = Properties.Resources.jigsaw_piece;
+            button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             button8.Location = new System.Drawing.Point(140, 5);
             button8.Name = "button8";
             button8.Size = new System.Drawing.Size(61, 50);
             button8.TabIndex = 8;
-            button8.Text = "button8";
             button8.UseVisualStyleBackColor = true;
+            button8.Click += button8_Click;
             // 
             // button9
             // 
-            button9.Enabled = false;
+            button9.BackgroundImage = Properties.Resources.trade;
+            button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             button9.Location = new System.Drawing.Point(207, 5);
             button9.Name = "button9";
             button9.Size = new System.Drawing.Size(61, 50);
             button9.TabIndex = 9;
-            button9.Text = "button9";
             button9.UseVisualStyleBackColor = true;
+            button9.Click += button9_Click;
             // 
             // button10
             // 
             button10.BackgroundImage = Properties.Resources.cog;
-            button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             button10.Location = new System.Drawing.Point(274, 5);
             button10.Name = "button10";
             button10.Size = new System.Drawing.Size(61, 50);
@@ -157,19 +161,31 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(526, 5);
+            label1.Location = new System.Drawing.Point(524, 300);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(79, 20);
             label1.TabIndex = 12;
             label1.Text = "by Nevelin";
             label1.Click += label1_Click;
             // 
+            // button12
+            // 
+            button12.BackgroundImage = Properties.Resources.perspective_dice_six_faces_random;
+            button12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            button12.Location = new System.Drawing.Point(542, 5);
+            button12.Name = "button12";
+            button12.Size = new System.Drawing.Size(61, 50);
+            button12.TabIndex = 13;
+            button12.UseVisualStyleBackColor = true;
+            button12.Click += button12_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.SteelBlue;
-            ClientSize = new System.Drawing.Size(617, 308);
+            ClientSize = new System.Drawing.Size(609, 324);
+            Controls.Add(button12);
             Controls.Add(label1);
             Controls.Add(button11);
             Controls.Add(button10);
@@ -207,5 +223,6 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button12;
     }
 }

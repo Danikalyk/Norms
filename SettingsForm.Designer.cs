@@ -28,32 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            radioButton1 = new System.Windows.Forms.RadioButton();
-            radioButton2 = new System.Windows.Forms.RadioButton();
             label1 = new System.Windows.Forms.Label();
+            checkBox1 = new System.Windows.Forms.CheckBox();
+            button1 = new System.Windows.Forms.Button();
             SuspendLayout();
-            // 
-            // radioButton1
-            // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new System.Drawing.Point(131, 48);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new System.Drawing.Size(81, 24);
-            radioButton1.TabIndex = 0;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "Сервер";
-            radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new System.Drawing.Point(238, 48);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new System.Drawing.Size(110, 24);
-            radioButton2.TabIndex = 1;
-            radioButton2.TabStop = true;
-            radioButton2.Text = "Автономно";
-            radioButton2.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -64,28 +42,49 @@
             label1.TabIndex = 2;
             label1.Text = "Тип получения данных";
             // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new System.Drawing.Point(12, 36);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new System.Drawing.Size(163, 24);
+            checkBox1.TabIndex = 3;
+            checkBox1.Text = "Работать локально";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            // 
+            // button1
+            // 
+            button1.Location = new System.Drawing.Point(12, 66);
+            button1.Name = "button1";
+            button1.Size = new System.Drawing.Size(163, 29);
+            button1.TabIndex = 4;
+            button1.Text = "Обновить данные";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(480, 241);
+            Controls.Add(button1);
+            Controls.Add(checkBox1);
             Controls.Add(label1);
-            Controls.Add(radioButton2);
-            Controls.Add(radioButton1);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "SettingsForm";
             ShowIcon = false;
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "НАСТРОЙКИ";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button1;
     }
 }

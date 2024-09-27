@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Data.SQLite;
-using System.IO;
 using System.Windows.Forms;
-using Dapper;
-using System.Data.SqlClient;
-using System.Collections.Generic;
-using System.Data;
 
 namespace Norms
 {
@@ -14,36 +8,7 @@ namespace Norms
         public Form1()
         {
             InitializeComponent();
-            //CreateDatabase();
         }
-
-        //private void CreateDatabase()
-        //{
-        //    string fileName = "GAS_CUTTING.db";
-        //    string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        //    string filePath = Path.Combine(appDataPath, fileName);
-
-        //    if (!File.Exists(filePath))
-        //    {
-        //        string databasePath = Path.Combine(appDataPath, "GAS_CUTTING.db");
-
-        //        SQLiteConnection.CreateFile(databasePath);
-        //        MessageBox.Show("База данных успешно создана!", "Внимание!", MessageBoxButtons.OK);
-
-        //        using (SQLiteConnection connection = new SQLiteConnection($"Data Source={databasePath};Version=3;"))
-        //        {
-        //            connection.Open();
-        //            using (SQLiteCommand command = new SQLiteCommand(config.createTablesSqlite, connection))
-        //            {
-        //                command.ExecuteNonQuery();
-        //                MessageBox.Show("Таблицы успешно созданы!", "Внимание!", MessageBoxButtons.OK);
-        //            }
-        //            connection.Close();
-        //        }
-
-
-        //    }
-        //}
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -146,7 +111,33 @@ namespace Norms
 
         private void button10_Click(object sender, EventArgs e)
         {
+            SettingsForm sf = new SettingsForm();
+            sf.ShowDialog();
+        }
 
+        private void button9_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            ProgrammConverter pc = new ProgrammConverter();
+            pc.Owner = this;
+            pc.ShowDialog();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            PluginSelectForm psf = new();
+            psf.ShowDialog();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            FAQForm fAQForm = new FAQForm();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            WeldingCalcForm wcf = new WeldingCalcForm();
+            wcf.Show();
         }
     }
 }

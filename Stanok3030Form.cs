@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.Globalization;
+using System.IO;
 using System.Windows.Forms;
-using Microsoft.Data.Sqlite;
-using SQLitePCL;
+using OfficeOpenXml;
 
 namespace Norms
 {
@@ -19,8 +21,13 @@ namespace Norms
         public int openedWindows = 0;
         private bool _listPanelEnabled = false;
         private bool _dataUpdated = false;
+        private bool localWork = Convert.ToBoolean(ConfigurationManager.AppSettings["localWork"]);
+        private string _selectedTickness;
+        private bool _firstClick = true;
 
+#pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
         public Stanok3030Form(string stanok)
+#pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
         {
             InitializeComponent();
 
@@ -28,15 +35,31 @@ namespace Norms
             {
                 string getMachineInfo = "SELECT MACHINE.SHORT_NAME FROM MACHINE";
 
-                SqlDataReader DR = GetData(getMachineInfo);
-
-                while (DR.Read())
+                if (!localWork)
                 {
-                    comboBox5.Items.Add(DR[0]);
-                }
+                    SqlDataReader DR = GetData(getMachineInfo);
 
-                //Закрытие DataReader
-                DR.Close();
+                    while (DR.Read())
+                    {
+                        comboBox5.Items.Add(DR[0]);
+                    }
+
+                    //Закрытие DataReader
+                    DR.Close();
+                }
+                else
+                {
+                    SQLiteConnection sqliteConn;
+                    SQLiteDataReader SLDR = GetDataSQLite(getMachineInfo, out sqliteConn);
+
+                    while (SLDR.Read())
+                    {
+                        comboBox5.Items.Add(SLDR[0]);
+                    }
+
+                    SLDR.Close();
+                    sqliteConn.Close();
+                }
             }
             catch (Exception ex)
             {
@@ -160,7 +183,7 @@ namespace Norms
                             float cuttingSpeed = Convert.ToSingle(textBox5.Text);
                             float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                            cuttingTime = (cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime);
+                            cuttingTime = ((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)) * 1.05f;
                         }
                         else if (comboBox5.Text == "ГАР")
                         {
@@ -168,11 +191,10 @@ namespace Norms
                             //float nvrez = (float)numericUpDown2.Value;
                             float cuttingSpeed = Convert.ToSingle(textBox5.Text);
                             //float vrezTime = Convert.ToSingle(textBox6.Text);
+                            float nvrez = (float)numericUpDown2.Value;
+                            float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                            if (!checkBox7.Checked)
-                                cuttingTime = (cuttingPerimeter / cuttingSpeed);
-                            else
-                                cuttingTime = (cuttingPerimeter / (cuttingSpeed * 0.75f));
+                            cuttingTime = ((cuttingPerimeter / cuttingSpeed) + (nvrez * vrezTime)) * 1.35f;
                         }
                         else if (comboBox5.Text == "IGNIUS")
                         {
@@ -181,7 +203,7 @@ namespace Norms
                             float cuttingSpeed = Convert.ToSingle(textBox5.Text);
                             float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                            cuttingTime = (cuttingPerimeter / cuttingSpeed) + (nvrez * (vrezTime / 60));
+                            cuttingTime = ((cuttingPerimeter / cuttingSpeed) + (nvrez * (vrezTime / 60))) * 1.05f;
                         }
                         else
                         {
@@ -190,7 +212,7 @@ namespace Norms
                             float cuttingSpeed = Convert.ToSingle(textBox5.Text);
                             float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                            cuttingTime = Convert.ToSingle(((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)) * 1.3);
+                            cuttingTime = Convert.ToSingle(((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime))) * 1.35f;
                             textBox3.Text = Convert.ToString(cuttingTime);
                         }
                     }
@@ -201,7 +223,7 @@ namespace Norms
                         float cuttingSpeed = Convert.ToSingle(textBox5.Text);
                         float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                        cuttingTime = (cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime);
+                        cuttingTime = ((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)) * 1.05f;
                     }
 
 
@@ -215,7 +237,7 @@ namespace Norms
                         float cuttingSpeed = Convert.ToSingle(textBox5.Text);
                         float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                        cuttingTime = (cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime);
+                        cuttingTime = ((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)) * 1.05f;
                     }
                     else if (comboBox5.Text == "ГАР")
                     {
@@ -225,9 +247,9 @@ namespace Norms
                         //float vrezTime = Convert.ToSingle(textBox6.Text);
 
                         if (!checkBox7.Checked)
-                            cuttingTime = (cuttingPerimeter / cuttingSpeed);
+                            cuttingTime = ((cuttingPerimeter / cuttingSpeed)) * 1.35f;
                         else
-                            cuttingTime = (cuttingPerimeter / (cuttingSpeed * 0.75f));
+                            cuttingTime = ((cuttingPerimeter / (cuttingSpeed * 0.75f))) * 1.35f;
 
                     }
                     else if (comboBox5.Text == "IGNIUS")
@@ -237,7 +259,7 @@ namespace Norms
                         float cuttingSpeed = Convert.ToSingle(textBox5.Text);
                         float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                        cuttingTime = (cuttingPerimeter / cuttingSpeed) + (nvrez * (vrezTime / 60));
+                        cuttingTime = ((cuttingPerimeter / cuttingSpeed) + (nvrez * (vrezTime / 60))) * 1.05f;
                     }
                     else
                     {
@@ -246,11 +268,11 @@ namespace Norms
                         float cuttingSpeed = Convert.ToSingle(textBox5.Text);
                         float vrezTime = Convert.ToSingle(textBox6.Text);
 
-                        cuttingTime = Convert.ToSingle(((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)));
+                        cuttingTime = Convert.ToSingle((((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime))) * 1.05f);
                     }
                 }
             }
-            
+
 
             float cutting;
             if (checkBox3.Checked)
@@ -300,27 +322,55 @@ namespace Norms
             }
             else
             {
-                if (checkBox1.Checked)
+                if (comboBox5.Text == "600")
                 {
-                    if (checkBox2.Checked)
+                    if (checkBox1.Checked)
                     {
-                        sum = CalculateSmallConture() + CalculateRazmetka();
+                        if (checkBox2.Checked)
+                        {
+                            sum = CalculateSmallConture() + CalculateRazmetka() + CalculateProbivka();
+                        }
+                        else
+                        {
+                            sum = CalculateSmallConture() + CalculateProbivka();
+                        }
+
+                        cutting = sum;
                     }
                     else
                     {
-                        sum = CalculateSmallConture();
-                    }
+                        if (checkBox2.Checked)
+                        {
+                            sum = CalculateRazmetka() + CalculateProbivka();
+                        }
 
-                    cutting = sum;
+                        cutting = sum;
+                    }
                 }
                 else
                 {
-                    if (checkBox2.Checked)
+                    if (checkBox1.Checked)
                     {
-                        sum = CalculateRazmetka();
-                    }
+                        if (checkBox2.Checked)
+                        {
+                            sum = CalculateSmallConture() + CalculateRazmetka();
+                        }
+                        else
+                        {
+                            sum = CalculateSmallConture();
+                        }
 
-                    cutting = sum;
+                        cutting = sum;
+                    }
+                    else
+                    {
+                        if (checkBox2.Checked)
+                        {
+                            sum = CalculateRazmetka();
+                        }
+
+                        cutting = sum;
+                    }
                 }
             }
 
@@ -334,9 +384,32 @@ namespace Norms
             conn.Open();
             SqlCommand cmd = new(query, conn);
             SqlDataReader DR = cmd.ExecuteReader();
-
             return DR;
+
         }
+
+        private static SQLiteDataReader GetDataSQLite(string query, out SQLiteConnection sqliteConn)
+        {
+            SQLiteDataReader SLDR = null;
+            sqliteConn = new SQLiteConnection(config.sqLiteConnectionString);
+            try
+            {
+                sqliteConn.Open();
+                SQLiteCommand command = new SQLiteCommand(query, sqliteConn);
+                SLDR = command.ExecuteReader();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Произошла ошибка: " + ex.Message);
+                // Закрываем соединение, если произошла ошибка
+                sqliteConn.Close();
+            }
+
+#pragma warning disable CS8603 // Возможно, возврат ссылки, допускающей значение NULL.
+            return SLDR;
+#pragma warning restore CS8603 // Возможно, возврат ссылки, допускающей значение NULL.
+        }
+
         //получение информации о металлах
         private void LoadMaterials()
         {
@@ -346,15 +419,32 @@ namespace Norms
             string sqlQueryMaterials = "SELECT DISTINCT MATERIAL.MATERIAL_NAME FROM " +
                 "CUTTING_INFO INNER JOIN MATERIAL ON CUTTING_INFO.MATERIAL = MATERIAL.MATERIAL_CODE INNER JOIN MACHINE ON CUTTING_INFO.MACHINE = MACHINE.MACHINE_CODE " +
                 $"WHERE MACHINE.SHORT_NAME = '{machineName}'";
-            SqlDataReader DR = GetData(sqlQueryMaterials);
 
-            while (DR.Read())
+            if (!localWork)
             {
-                comboBox1.Items.Add(DR[0]);
-            }
+                SqlDataReader DR = GetData(sqlQueryMaterials);
 
-            //Закрытие DataReader
-            DR.Close();
+                while (DR.Read())
+                {
+                    comboBox1.Items.Add(DR[0]);
+                }
+
+                //Закрытие DataReader
+                DR.Close();
+            }
+            else
+            {
+                SQLiteConnection sqliteConn;
+                SQLiteDataReader SLDR = GetDataSQLite(sqlQueryMaterials, out sqliteConn);
+
+                while (SLDR.Read())
+                {
+                    comboBox1.Items.Add(SLDR[0]);
+                }
+
+                SLDR.Close();
+                sqliteConn.Close();
+            }
 
             bool itemFound = false;
 
@@ -453,14 +543,30 @@ namespace Norms
                 $"WHERE MACHINE.SHORT_NAME = '{machine}' AND CUTTING_INFO.TICKNESS = {metallTickness} " +
                 $"AND MATERIAL.MATERIAL_NAME = '{material}'";
 
-                SqlDataReader DR2 = GetData(sqlQueryGetGas);
-
-                while (DR2.Read())
+                if (!localWork)
                 {
-                    comboBox3.Items.Add(Convert.ToString(DR2["Газ"]));
-                }
+                    SqlDataReader DR2 = GetData(sqlQueryGetGas);
 
-                DR2.Close();
+                    while (DR2.Read())
+                    {
+                        comboBox3.Items.Add(Convert.ToString(DR2["Газ"]));
+                    }
+
+                    DR2.Close();
+                }
+                else
+                {
+                    SQLiteConnection sqliteConn;
+                    SQLiteDataReader SLDR = GetDataSQLite(sqlQueryGetGas, out sqliteConn);
+
+                    while (SLDR.Read())
+                    {
+                        comboBox3.Items.Add(Convert.ToString(SLDR["Газ"]));
+                    }
+
+                    SLDR.Close();
+                    sqliteConn.Close();
+                }
             }
             catch (Exception ex)
             {
@@ -495,10 +601,11 @@ namespace Norms
         //получение информации о различных параметрах резки
         private void GetInformationAboutCutting(string material, string tickness)
         {
-
+            bool localWork = Convert.ToBoolean(ConfigurationManager.AppSettings["localWork"]);
             string metallTickness = tickness.Replace(",", ".");
             string machine = comboBox5.Text;
             string gas = comboBox3.Text;
+
             try
             {
                 string sqlQuery = $"SELECT MACHINE.SHORT_NAME as 'Станок', MATERIAL.MATERIAL_NAME as 'Металл', " +
@@ -508,16 +615,37 @@ namespace Norms
                     $"INNER JOIN MACHINE ON CUTTING_INFO.MACHINE = MACHINE.MACHINE_CODE " +
                     $"INNER JOIN MATERIAL ON CUTTING_INFO.MATERIAL = MATERIAL.MATERIAL_CODE " +
                     $"WHERE MACHINE.SHORT_NAME = '{machine}' AND CUTTING_INFO.TICKNESS = {metallTickness} AND MATERIAL.MATERIAL_NAME = '{material}' AND GAS.SHORT_NAME = '{gas}'";
-                SqlDataReader DR = GetData(sqlQuery);
 
-                while (DR.Read())
+                if (!localWork)
                 {
-                    _incuttingTime = Convert.ToSingle(DR["Время врезки"]);
-                    textBox6.Text = _incuttingTime.ToString();
-                    _dataUpdated = Convert.ToBoolean(DR["Обновлено"]);
+                    SqlDataReader DR = GetData(sqlQuery);
+
+                    while (DR.Read())
+                    {
+                        _incuttingTime = Convert.ToSingle(DR["Время врезки"]);
+                        textBox6.Text = _incuttingTime.ToString();
+                        _dataUpdated = Convert.ToBoolean(DR["Обновлено"]);
+                    }
+
+                    DR.Close();
+                }
+                else
+                {
+                    SQLiteConnection sqliteConn;
+                    SQLiteDataReader SLDR = GetDataSQLite(sqlQuery, out sqliteConn);
+
+                    while (SLDR.Read())
+                    {
+                        _incuttingTime = Convert.ToSingle(SLDR["Время врезки"]);
+                        textBox6.Text = _incuttingTime.ToString();
+                        _dataUpdated = Convert.ToBoolean(SLDR["Обновлено"]);
+                    }
+
+                    SLDR.Close();
+                    sqliteConn.Close();
                 }
 
-                DR.Close();
+
                 GetSpeed(metallTickness);
             }
             catch (Exception ex)
@@ -525,6 +653,7 @@ namespace Norms
                 MessageBox.Show("Cutting Код ошибки: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         //получение параметров скорости врезки
         private void GetSpeed(string tickness)
         {
@@ -538,25 +667,57 @@ namespace Norms
                     $"FROM CUTTING_INFO INNER JOIN MATERIAL ON CUTTING_INFO.MATERIAL = MATERIAL.MATERIAL_CODE INNER JOIN MACHINE ON CUTTING_INFO.MACHINE = MACHINE.MACHINE_CODE INNER JOIN GAS ON CUTTING_INFO.GAS = GAS.GAS_CODE  " +
                     $"WHERE MATERIAL.MATERIAL_NAME = '{materialName}' AND CUTTING_INFO.TICKNESS = {metallTickness} AND MACHINE.SHORT_NAME = '{machine}' AND GAS.SHORT_NAME = '{gas}'";
 
-                SqlDataReader DR = GetData(sqlQuery);
-                while (DR.Read())
+                if (!localWork)
                 {
-                    if (radioButton1.Checked)
-                    {
-                        _cuttingSpeed = Convert.ToSingle(DR["Максимальная скорость"]);
-                        textBox5.Text = _cuttingSpeed.ToString();
+                    SqlDataReader DR = GetData(sqlQuery);
 
-                    }
-                    if (radioButton2.Checked)
+                    while (DR.Read())
                     {
-                        _cuttingSpeed = Convert.ToSingle(DR["Средняя скорость"]);
-                        textBox5.Text = _cuttingSpeed.ToString();
+                        if (radioButton1.Checked)
+                        {
+                            _cuttingSpeed = Convert.ToSingle(DR["Максимальная скорость"]);
+                            textBox5.Text = _cuttingSpeed.ToString();
+
+                        }
+                        if (radioButton2.Checked)
+                        {
+                            _cuttingSpeed = Convert.ToSingle(DR["Средняя скорость"]);
+                            textBox5.Text = _cuttingSpeed.ToString();
+                        }
+                        if (radioButton3.Checked)
+                        {
+                            _cuttingSpeed = Convert.ToSingle(DR["Минимальная скорость"]);
+                            textBox5.Text = _cuttingSpeed.ToString();
+                        }
                     }
-                    if (radioButton3.Checked)
+                }
+                else
+                {
+                    SQLiteConnection sqliteConn;
+                    SQLiteDataReader SLDR = GetDataSQLite(sqlQuery, out sqliteConn);
+
+                    while (SLDR.Read())
                     {
-                        _cuttingSpeed = Convert.ToSingle(DR["Минимальная скорость"]);
-                        textBox5.Text = _cuttingSpeed.ToString();
+                        if (radioButton1.Checked)
+                        {
+                            _cuttingSpeed = Convert.ToSingle(SLDR["Максимальная скорость"]);
+                            textBox5.Text = _cuttingSpeed.ToString();
+
+                        }
+                        if (radioButton2.Checked)
+                        {
+                            _cuttingSpeed = Convert.ToSingle(SLDR["Средняя скорость"]);
+                            textBox5.Text = _cuttingSpeed.ToString();
+                        }
+                        if (radioButton3.Checked)
+                        {
+                            _cuttingSpeed = Convert.ToSingle(SLDR["Минимальная скорость"]);
+                            textBox5.Text = _cuttingSpeed.ToString();
+                        }
                     }
+
+                    SLDR.Close();
+                    sqliteConn.Close();
                 }
             }
             catch (Exception ex)
@@ -572,20 +733,48 @@ namespace Norms
 
             string selectedMaterial = comboBox1.Text;
             string machine = comboBox5.Text;
+            _selectedTickness = comboBox2.Text;
 
             if (!String.IsNullOrEmpty(selectedMaterial))
             {
                 string sqlQueryTickness = $"SELECT DISTINCT CUTTING_INFO.TICKNESS, MACHINE.SHORT_NAME FROM CUTTING_INFO INNER JOIN MATERIAL ON CUTTING_INFO.MATERIAL = MATERIAL.MATERIAL_CODE INNER JOIN MACHINE ON CUTTING_INFO.MACHINE = MACHINE.MACHINE_CODE WHERE MATERIAL.MATERIAL_NAME = '{selectedMaterial}' AND MACHINE.SHORT_NAME = '{machine}'";
-                SqlDataReader DR2 = GetData(sqlQueryTickness);
 
-                while (DR2.Read())
+                if (!localWork)
                 {
-                    comboBox2.Items.Add(Convert.ToString(DR2[0]));
+                    SqlDataReader DR2 = GetData(sqlQueryTickness);
+
+                    while (DR2.Read())
+                    {
+                        comboBox2.Items.Add(Convert.ToString(DR2[0]));
+                    }
+
+                    // Закрытие DataReader
+                    DR2.Close();
+                }
+                else
+                {
+                    SQLiteConnection sqliteConn;
+                    SQLiteDataReader SLDR = GetDataSQLite(sqlQueryTickness, out sqliteConn);
+
+                    while (SLDR.Read())
+                    {
+                        comboBox2.Items.Add(Convert.ToString(SLDR[0]));
+                    }
+
+                    SLDR.Close();
+                    sqliteConn.Close();
                 }
 
-                // Закрытие DataReader
-                DR2.Close();
-                comboBox2.SelectedIndex = 0;
+                string selectedTicknessStr = _selectedTickness.ToString();
+
+                if (comboBox2.Items.Contains(selectedTicknessStr))
+                {
+                    comboBox2.SelectedItem = selectedTicknessStr;
+                }
+                else if (comboBox2.Items.Count > 0)
+                {
+                    comboBox2.SelectedIndex = 0;
+                }
             }
         }
         //смена толщины
@@ -600,6 +789,7 @@ namespace Norms
             GetRazmetkaData();
             CuttingCalcution();
         }
+
         //максимальная скорость
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
@@ -610,6 +800,7 @@ namespace Norms
                 CuttingCalcution();
             }
         }
+
         //средняя скорость
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
@@ -620,6 +811,7 @@ namespace Norms
                 CuttingCalcution();
             }
         }
+
         //минимальная скорость
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
@@ -1018,10 +1210,6 @@ namespace Norms
                 checkBox2.Text = "Разметка";
             }
 
-            if (comboBox5.Text == "ГАР")
-                checkBox7.Visible = true;
-            else
-                checkBox7.Visible = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -1270,6 +1458,248 @@ namespace Norms
                 numericUpDown5.Enabled = true;
                 numericUpDown6.Enabled = true;
             }
+        }
+
+        private void numericUpDown1_Click(object sender, EventArgs e)
+        {
+            if (!_firstClick && numericUpDown1.Controls[1] is TextBox textBox)
+            {
+                // Сбираем выделение текста
+                textBox.SelectionStart = textBox.Text.Length;
+                textBox.SelectionLength = 0;
+            }
+            _firstClick = false;
+        }
+
+        private static double CalculateCuttingPerimiter(string input)
+        {
+            if (double.TryParse(input, out double number))
+            {
+                return number;
+            }
+
+            string[] dimensions = input.Split('x');
+
+            double width = double.Parse(dimensions[0]);
+            double height = double.Parse(dimensions[1]);
+
+            double perimeter = 2 * (width + height);
+
+            return perimeter;
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.Commercial;
+
+            int selectedSheet = -1;
+
+            if (!double.TryParse(textBox5.Text, out double cuttingSpeed) ||
+                !double.TryParse(textBox6.Text, out double vrezTime))
+            {
+                MessageBox.Show("Введите корректные значения для скорости реза и времени входа!", "Ошибка");
+                return;
+            }
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
+                openFileDialog.Title = "Выберите Excel файл";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+
+                    using (ExcelSheetSelectedForm form2 = new ExcelSheetSelectedForm(filePath))
+                    {
+                        if (form2.ShowDialog() == DialogResult.OK)
+                        {
+                            selectedSheet = config.selectedSheet;
+                        }
+                    }
+
+                    if (File.Exists(filePath))
+                    {
+                        try
+                        {
+                            using (var package = new ExcelPackage(new FileInfo(filePath)))
+                            {
+                                var worksheet = package.Workbook.Worksheets[selectedSheet];
+
+                                int rowCount = worksheet.Dimension.Rows;
+
+                                // Добавить новую колонку для результатов
+                                worksheet.Cells[1, 4].Value = "Время реза";
+
+                                for (int row = 2; row <= rowCount; row++)
+                                {
+                                    if (CalculateCuttingPerimiter(worksheet.Cells[row, 1].Text) is double cuttingPerimeter &&
+                                        double.TryParse(worksheet.Cells[row, 2].Text, out double nvrez))
+                                    {
+                                        double cuttingTime = 0f;
+                                        double sum = 0f;
+
+                                        if (!String.IsNullOrEmpty(comboBox3.Text) && !String.IsNullOrEmpty(textBox5.Text) &&
+                                            !String.IsNullOrEmpty(textBox6.Text) && !String.IsNullOrEmpty(Convert.ToString(numericUpDown1.Value)) &&
+                                            !String.IsNullOrEmpty(Convert.ToString(numericUpDown2.Value)))
+                                        {
+                                            if (_dataUpdated == false)
+                                            {
+                                                if (comboBox3.Text != "Воздух")
+                                                {
+                                                    if (comboBox5.Text == "600")
+                                                    {
+                                                        cuttingTime = (((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime))) * 1.05f;
+                                                    }
+                                                    else if (comboBox5.Text == "ГАР")
+                                                    {
+                                                        if (!checkBox7.Checked)
+                                                            cuttingTime = (cuttingPerimeter / cuttingSpeed);
+                                                        else
+                                                            cuttingTime = ((cuttingPerimeter / (cuttingSpeed * 0.75f))) * 1.05f;
+                                                    }
+                                                    else if (comboBox5.Text == "IGNIUS")
+                                                    {
+                                                        cuttingTime = ((cuttingPerimeter / cuttingSpeed) + (nvrez * (vrezTime / 60))) * 1.05f;
+                                                    }
+                                                    else
+                                                    {
+                                                        cuttingTime = Convert.ToSingle(((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime))) * 1.35f;
+                                                        textBox3.Text = Convert.ToString(cuttingTime);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    cuttingTime = (((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime))) * 1.05f;
+                                                }
+
+
+                                            }
+                                            else
+                                            {
+                                                if (comboBox5.Text == "600")
+                                                {
+                                                    cuttingTime = ((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime)) * 1.05f;
+                                                }
+                                                else if (comboBox5.Text == "ГАР")
+                                                {
+                                                    if (!checkBox7.Checked)
+                                                        cuttingTime = (cuttingPerimeter / cuttingSpeed) * 1.35f;
+                                                    else
+                                                        cuttingTime = (cuttingPerimeter / (cuttingSpeed * 0.75f)) * 1.35f;
+
+                                                }
+                                                else if (comboBox5.Text == "IGNIUS")
+                                                {
+                                                    cuttingTime = ((cuttingPerimeter / cuttingSpeed) + (nvrez * (vrezTime / 60))) * 1.05f;
+                                                }
+                                                else
+                                                {
+                                                    cuttingTime = Convert.ToSingle((((cuttingPerimeter / (cuttingSpeed * 1000)) + (nvrez * vrezTime))) * 1.05f);
+                                                }
+                                            }
+                                        }
+
+
+                                        double cutting;
+                                        if (checkBox3.Checked)
+                                        {
+                                            if (comboBox5.Text == "600")
+                                            {
+                                                if (checkBox2.Checked && !checkBox1.Checked)
+                                                {
+                                                    sum = CalculateRazmetka() + cuttingTime + CalculateProbivka();
+                                                }
+                                                else if (checkBox1.Checked && checkBox2.Checked)
+                                                {
+                                                    sum = CalculateSmallConture() + CalculateRazmetka() + cuttingTime + CalculateProbivka();
+                                                }
+                                                else if (!checkBox2.Checked && !checkBox1.Checked)
+                                                {
+                                                    sum = cuttingTime + CalculateProbivka();
+                                                }
+                                                else if (!checkBox2.Checked && checkBox1.Checked)
+                                                {
+                                                    sum = CalculateSmallConture() + cuttingTime + CalculateProbivka();
+                                                }
+
+                                                cutting = sum;
+                                            }
+                                            else
+                                            {
+                                                if (!checkBox1.Checked && checkBox2.Checked)
+                                                {
+                                                    sum = CalculateRazmetka() + cuttingTime;
+                                                }
+                                                else if (checkBox1.Checked && checkBox2.Checked)
+                                                {
+                                                    sum = CalculateSmallConture() + CalculateRazmetka() + cuttingTime;
+                                                }
+                                                else if (!checkBox2.Checked && !checkBox1.Checked)
+                                                {
+                                                    sum = cuttingTime;
+                                                }
+                                                else if (checkBox1.Checked && !checkBox2.Checked)
+                                                {
+                                                    sum = CalculateSmallConture() + cuttingTime;
+                                                }
+
+                                                cutting = sum;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (checkBox1.Checked)
+                                            {
+                                                if (checkBox2.Checked)
+                                                {
+                                                    sum = CalculateSmallConture() + CalculateRazmetka();
+                                                }
+                                                else
+                                                {
+                                                    sum = CalculateSmallConture();
+                                                }
+
+                                                cutting = sum;
+                                            }
+                                            else
+                                            {
+                                                if (checkBox2.Checked)
+                                                {
+                                                    sum = CalculateRazmetka();
+                                                }
+
+                                                cutting = sum;
+                                            }
+                                        }
+
+
+                                        worksheet.Cells[row, 4].Value = cutting;
+                                    }
+                                    else
+                                    {
+                                        worksheet.Cells[row, 4].Value = "Ошибка!";
+                                    }
+                                }
+
+                                package.Save();
+                                MessageBox.Show("Операция выполнена успешно!", "Успех");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            DopTimeUgolok dtu = new DopTimeUgolok();
+            dtu.Show();
+            config.openedWindows += 1;
         }
     }
 }

@@ -49,6 +49,7 @@
             label5 = new System.Windows.Forms.Label();
             textBox3 = new System.Windows.Forms.TextBox();
             groupBox2 = new System.Windows.Forms.GroupBox();
+            button9 = new System.Windows.Forms.Button();
             checkBox7 = new System.Windows.Forms.CheckBox();
             checkBox6 = new System.Windows.Forms.CheckBox();
             textBox1 = new System.Windows.Forms.TextBox();
@@ -87,6 +88,7 @@
             label13 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
             checkBox8 = new System.Windows.Forms.CheckBox();
+            button2 = new System.Windows.Forms.Button();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
@@ -201,7 +203,7 @@
             // 
             numericUpDown6.Enabled = false;
             numericUpDown6.Location = new System.Drawing.Point(273, 169);
-            numericUpDown6.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numericUpDown6.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numericUpDown6.Name = "numericUpDown6";
             numericUpDown6.Size = new System.Drawing.Size(69, 27);
             numericUpDown6.TabIndex = 15;
@@ -213,7 +215,7 @@
             // 
             numericUpDown5.Enabled = false;
             numericUpDown5.Location = new System.Drawing.Point(273, 122);
-            numericUpDown5.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numericUpDown5.Maximum = new decimal(new int[] { 999999999, 0, 0, 0 });
             numericUpDown5.Name = "numericUpDown5";
             numericUpDown5.Size = new System.Drawing.Size(69, 27);
             numericUpDown5.TabIndex = 14;
@@ -224,7 +226,7 @@
             // numericUpDown4
             // 
             numericUpDown4.Location = new System.Drawing.Point(193, 169);
-            numericUpDown4.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            numericUpDown4.Maximum = new decimal(new int[] { 999999999, 0, 0, 0 });
             numericUpDown4.Name = "numericUpDown4";
             numericUpDown4.Size = new System.Drawing.Size(72, 27);
             numericUpDown4.TabIndex = 13;
@@ -235,7 +237,7 @@
             // numericUpDown3
             // 
             numericUpDown3.Location = new System.Drawing.Point(193, 122);
-            numericUpDown3.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            numericUpDown3.Maximum = new decimal(new int[] { 999999999, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
             numericUpDown3.Size = new System.Drawing.Size(72, 27);
             numericUpDown3.TabIndex = 12;
@@ -246,7 +248,7 @@
             // numericUpDown2
             // 
             numericUpDown2.Location = new System.Drawing.Point(99, 169);
-            numericUpDown2.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            numericUpDown2.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             numericUpDown2.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown2.Name = "numericUpDown2";
             numericUpDown2.Size = new System.Drawing.Size(88, 27);
@@ -258,11 +260,12 @@
             // numericUpDown1
             // 
             numericUpDown1.Location = new System.Drawing.Point(99, 122);
-            numericUpDown1.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
+            numericUpDown1.Maximum = new decimal(new int[] { 999999999, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new System.Drawing.Size(88, 27);
             numericUpDown1.TabIndex = 2;
             numericUpDown1.ValueChanged += numericUpDown_ValueChanged;
+            numericUpDown1.Click += numericUpDown1_Click;
             numericUpDown1.KeyDown += Control_KeyDown;
             numericUpDown1.Validating += numericUpDown1_Validating;
             // 
@@ -335,6 +338,7 @@
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(button9);
             groupBox2.Controls.Add(checkBox7);
             groupBox2.Controls.Add(checkBox6);
             groupBox2.Controls.Add(textBox1);
@@ -357,12 +361,23 @@
             groupBox2.TabStop = false;
             groupBox2.Enter += groupBox2_Enter;
             // 
+            // button9
+            // 
+            button9.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            button9.Location = new System.Drawing.Point(118, 174);
+            button9.Name = "button9";
+            button9.Size = new System.Drawing.Size(107, 34);
+            button9.TabIndex = 20;
+            button9.TabStop = false;
+            button9.Text = "T всп Уг";
+            button9.UseVisualStyleBackColor = true;
+            button9.Click += button9_Click;
+            // 
             // checkBox7
             // 
             checkBox7.AutoSize = true;
             checkBox7.Checked = true;
             checkBox7.CheckState = System.Windows.Forms.CheckState.Checked;
-            checkBox7.Enabled = false;
             checkBox7.Location = new System.Drawing.Point(6, 150);
             checkBox7.Name = "checkBox7";
             checkBox7.Size = new System.Drawing.Size(182, 24);
@@ -681,6 +696,7 @@
             // numericUpDown9
             // 
             numericUpDown9.Location = new System.Drawing.Point(135, 41);
+            numericUpDown9.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             numericUpDown9.Name = "numericUpDown9";
             numericUpDown9.Size = new System.Drawing.Size(65, 27);
             numericUpDown9.TabIndex = 7;
@@ -771,12 +787,23 @@
             checkBox8.UseVisualStyleBackColor = true;
             checkBox8.CheckedChanged += checkBox8_CheckedChanged;
             // 
+            // button2
+            // 
+            button2.Location = new System.Drawing.Point(12, 289);
+            button2.Name = "button2";
+            button2.Size = new System.Drawing.Size(282, 29);
+            button2.TabIndex = 26;
+            button2.Text = "Рассчитать из Excel-файла";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click_1;
+            // 
             // Stanok3030Form
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.SteelBlue;
             ClientSize = new System.Drawing.Size(682, 331);
+            Controls.Add(button2);
             Controls.Add(checkBox8);
             Controls.Add(groupBox4);
             Controls.Add(button6);
@@ -886,5 +913,7 @@
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.CheckBox checkBox7;
         private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button9;
     }
 }

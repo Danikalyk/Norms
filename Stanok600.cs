@@ -17,7 +17,6 @@ namespace Norms
 
         private float Calculate600DopTime()
         {
-            float listProgrammTime = 0f;
             float listTime = 0f;
             float programmTime = 0f;
 
@@ -42,26 +41,26 @@ namespace Norms
                 programmTime = (float)numericUpDown2.Value * 5;
             }
 
-            listProgrammTime = listTime + programmTime;
+            float listProgrammTime = listTime + programmTime;
 
             return listProgrammTime;
         }
 
-        private float Razgruzka()
+        private double Razgruzka()
         {
-            float razrTime = 1 * (float)numericUpDown3.Value;
+            double razrTime = Convert.ToDouble(numericUpDown3.Value) * 1;
             return razrTime;
         }
 
-        private float HandDeleted()
+        private double HandDeleted()
         {
-            float handDeledet = Convert.ToSingle(0.5 * (float)numericUpDown3.Value);
+            double handDeledet = Convert.ToDouble(numericUpDown4.Value) * 0.5;
             return handDeledet;
         }
 
-        private float Pereustanovka()
+        private double Pereustanovka()
         {
-            float pereustanovka = Convert.ToSingle(3 * (float)numericUpDown3.Value);
+            double pereustanovka = Convert.ToDouble(numericUpDown5.Value) * 3;
             return pereustanovka;
         }
 
@@ -86,7 +85,7 @@ namespace Norms
         {
             float probivkaTime = 0f;
             float probivkaCount = Convert.ToSingle(numericUpDown7.Value);
-            probivkaTime = Convert.ToSingle(4 * probivkaCount);
+            probivkaTime = Convert.ToSingle(probivkaCount) * 4;
 
             return probivkaTime;
         }
@@ -106,11 +105,11 @@ namespace Norms
                 }
                 if (numericUpDown9.Value >= 2000)
                 {
-                    twoTime = Convert.ToInt32(numericUpDown8.Value / 2000 * 1);
+                    twoTime = Convert.ToInt32(numericUpDown9.Value / 2000 * 1);
                 }
                 if (numericUpDown10.Value >= 2000)
                 {
-                    threeTime = Convert.ToInt32(numericUpDown8.Value / 2000 * 1);
+                    threeTime = Convert.ToInt32(numericUpDown10.Value / 2000 * 1);
                 }
 
                 zatochkaTime = oneTime + twoTime + threeTime;
@@ -123,11 +122,11 @@ namespace Norms
                 }
                 if (numericUpDown9.Value >= 1000)
                 {
-                    twoTime = Convert.ToInt32(numericUpDown8.Value / 1000 * 1);
+                    twoTime = Convert.ToInt32(numericUpDown9.Value / 1000 * 1);
                 }
                 if (numericUpDown10.Value >= 1000)
                 {
-                    threeTime = Convert.ToInt32(numericUpDown8.Value / 1000 * 1);
+                    threeTime = Convert.ToInt32(numericUpDown10.Value / 1000 * 1);
                 }
 
                 zatochkaTime = oneTime + twoTime + threeTime;
@@ -140,11 +139,11 @@ namespace Norms
                 }
                 if (numericUpDown9.Value >= 2000)
                 {
-                    twoTime = Convert.ToInt32(numericUpDown8.Value / 2000 * 1);
+                    twoTime = Convert.ToInt32(numericUpDown9.Value / 2000 * 1);
                 }
                 if (numericUpDown10.Value >= 2000)
                 {
-                    threeTime = Convert.ToInt32(numericUpDown8.Value / 2000 * 1);
+                    threeTime = Convert.ToInt32(numericUpDown10.Value / 2000 * 1);
                 }
 
                 zatochkaTime = oneTime + twoTime + threeTime;
@@ -153,43 +152,49 @@ namespace Norms
             return zatochkaTime;
         }
 
-        private float AverengeTime()
+        private double AverengeTime()
         {
-            float calcTime = Calculate600DopTime();
-            float razr = 0f;
-            float handDel = 0f;
-            float pereustanovka = 0f;
-            float controlTime = 0f;
-            float probivka = 0f;
-            float aveTime;
-            float zatochka = 0f;
+            double calcTime = Calculate600DopTime();
+            double razr = 0f;
+            double handDel = 0f;
+            double pereustanovka = 0f;
+            double controlTime = 0f;
+            double probivka = 0f;
+            double aveTime;
+            double zatochka = 0f;
 
             if (checkBox1.Checked)
             {
                 razr = Razgruzka();
             }
+
             if (checkBox2.Checked)
             {
                 handDel = HandDeleted();
             }
+
             if (checkBox3.Checked)
             {
                 pereustanovka = Pereustanovka();
             }
+
             if (checkBox4.Checked)
             {
                 controlTime = Control();
             }
+
             if (checkBox5.Checked)
             {
                 probivka = Probivka();
             }
+
             if (checkBox6.Checked)
             {
                 zatochka = Zatochka();
             }
 
             aveTime = calcTime + razr + handDel + pereustanovka + controlTime + probivka + zatochka;
+
             return aveTime;
         }
 

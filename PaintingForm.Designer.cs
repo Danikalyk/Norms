@@ -118,10 +118,11 @@
             checkBox7.AutoSize = true;
             checkBox7.Location = new System.Drawing.Point(8, 199);
             checkBox7.Name = "checkBox7";
-            checkBox7.Size = new System.Drawing.Size(427, 24);
+            checkBox7.Size = new System.Drawing.Size(477, 24);
             checkBox7.TabIndex = 13;
-            checkBox7.Text = "Удаление обезжиривающих составов  сжатым воздухом";
+            checkBox7.Text = "Удаление обезжиривающих составов и пыли сжатым воздухом";
             checkBox7.UseVisualStyleBackColor = true;
+            checkBox7.CheckedChanged += checkBox7_CheckedChanged;
             // 
             // checkBox2
             // 
@@ -132,6 +133,7 @@
             checkBox2.TabIndex = 12;
             checkBox2.Text = "Дробеструйная обработка";
             checkBox2.UseVisualStyleBackColor = true;
+            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
             // 
             // checkBox6
             // 
@@ -140,8 +142,9 @@
             checkBox6.Name = "checkBox6";
             checkBox6.Size = new System.Drawing.Size(152, 64);
             checkBox6.TabIndex = 11;
-            checkBox6.Text = "Струйный обмыв\r\nповерхности\r\nраспылителем";
+            checkBox6.Text = "Струйный обмыв\r\nповерхности\r\nрастворителем";
             checkBox6.UseVisualStyleBackColor = true;
+            checkBox6.CheckedChanged += checkBox6_CheckedChanged;
             // 
             // checkBox5
             // 
@@ -152,6 +155,7 @@
             checkBox5.TabIndex = 10;
             checkBox5.Text = "Удаление пыли сжатым воздухом";
             checkBox5.UseVisualStyleBackColor = true;
+            checkBox5.CheckedChanged += checkBox5_CheckedChanged;
             // 
             // checkBox4
             // 
@@ -162,6 +166,7 @@
             checkBox4.TabIndex = 9;
             checkBox4.Text = "Протирка сухой салфеткой";
             checkBox4.UseVisualStyleBackColor = true;
+            checkBox4.CheckedChanged += checkBox4_CheckedChanged;
             // 
             // checkBox3
             // 
@@ -208,6 +213,7 @@
             textBox9.Name = "textBox9";
             textBox9.Size = new System.Drawing.Size(103, 27);
             textBox9.TabIndex = 3;
+            textBox9.TextChanged += textBox9_TextChanged;
             textBox9.KeyPress += textBox9_KeyPress;
             // 
             // textBox8
