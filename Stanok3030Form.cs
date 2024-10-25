@@ -44,7 +44,6 @@ namespace Norms
                         comboBox5.Items.Add(DR[0]);
                     }
 
-                    //Закрытие DataReader
                     DR.Close();
                 }
                 else
@@ -108,7 +107,7 @@ namespace Norms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                e.SuppressKeyPress = true; // Предотвратить звук динга
+                e.SuppressKeyPress = true;
                 MoveToNextControl(sender, false);
             }
             else if (e.KeyCode == Keys.ControlKey)
@@ -122,7 +121,7 @@ namespace Norms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                e.SuppressKeyPress = true; // Предотвратить звук динга
+                e.SuppressKeyPress = true;
                 MoveToNextControl(sender, false);
             }
             else if (e.KeyCode == Keys.ControlKey)
@@ -148,7 +147,6 @@ namespace Norms
                     if (nextControl != null && nextControl.CanSelect)
                     {
                         nextControl.Select();
-                        // Выделение текста, если элемент управления - текстовое поле
                         if (nextControl is TextBox textBox)
                         {
                             textBox.SelectAll();
@@ -162,7 +160,6 @@ namespace Norms
         {
 
         }
-        //калькулятор времени резки металла
         private void CuttingCalcution()
         {
             float cuttingTime = 0f;
@@ -188,9 +185,7 @@ namespace Norms
                         else if (comboBox5.Text == "ГАР")
                         {
                             float cuttingPerimeter = (float)numericUpDown1.Value;
-                            //float nvrez = (float)numericUpDown2.Value;
                             float cuttingSpeed = Convert.ToSingle(textBox5.Text);
-                            //float vrezTime = Convert.ToSingle(textBox6.Text);
                             float nvrez = (float)numericUpDown2.Value;
                             float vrezTime = Convert.ToSingle(textBox6.Text);
 
@@ -242,9 +237,7 @@ namespace Norms
                     else if (comboBox5.Text == "ГАР")
                     {
                         float cuttingPerimeter = (float)numericUpDown1.Value;
-                        //float nvrez = (float)numericUpDown2.Value;
                         float cuttingSpeed = Convert.ToSingle(textBox5.Text);
-                        //float vrezTime = Convert.ToSingle(textBox6.Text);
 
                         if (!checkBox7.Checked)
                             cuttingTime = ((cuttingPerimeter / cuttingSpeed)) * 1.35f;
@@ -377,7 +370,6 @@ namespace Norms
             textBox3.Text = cutting.ToString();
         }
 
-        //метод для получения данных из базы данных
         private static SqlDataReader GetData(string query)
         {
             SqlConnection conn = new(config._connectionString);
@@ -401,16 +393,14 @@ namespace Norms
             catch (Exception ex)
             {
                 MessageBox.Show("Произошла ошибка: " + ex.Message);
-                // Закрываем соединение, если произошла ошибка
                 sqliteConn.Close();
             }
 
-#pragma warning disable CS8603 // Возможно, возврат ссылки, допускающей значение NULL.
+#pragma warning disable CS8603
             return SLDR;
 #pragma warning restore CS8603 // Возможно, возврат ссылки, допускающей значение NULL.
         }
 
-        //получение информации о металлах
         private void LoadMaterials()
         {
             comboBox1.Items.Clear();
@@ -429,7 +419,6 @@ namespace Norms
                     comboBox1.Items.Add(DR[0]);
                 }
 
-                //Закрытие DataReader
                 DR.Close();
             }
             else
@@ -458,7 +447,6 @@ namespace Norms
                 }
             }
 
-            // Обработаем случай, когда элемент не найден
             if (!itemFound)
             {
                 comboBox1.SelectedIndex = 0;
@@ -509,23 +497,19 @@ namespace Norms
         {
             NumericUpDown? numericUpDown = sender as NumericUpDown;
             numericUpDown?.Select(0, numericUpDown.Text.Length);
-            // Или использовать numericUpDown.Select(0, numericUpDown.Value.ToString().Length);
         }
 
-        // Или обработчик для GotFocus
         private void numericUpDown_GotFocus(object sender, EventArgs e)
         {
             NumericUpDown? numericUpDown = sender as NumericUpDown;
             numericUpDown?.Select(0, numericUpDown.Text.Length);
         }
 
-        // Или обработчик события Click 
         private void numericUpDown_Click(object sender, EventArgs e)
         {
             NumericUpDown? numericUpDown = sender as NumericUpDown;
             numericUpDown?.Select(0, numericUpDown.Text.Length);
         }
-        //получение информации о режущем газе
         private void GetInformationAboutGas(string material, string tickness, string machine)
         {
             string metallTickness = tickness.Replace(",", ".");
@@ -582,7 +566,6 @@ namespace Norms
             }
             else
             {
-                // Если заданный элемент не найден, ищем второй заданный
                 index = comboBox3.FindStringExact(alternateItem);
                 if (index != -1)
                 {
@@ -590,7 +573,6 @@ namespace Norms
                 }
                 else
                 {
-                    // Если ни один из заданных элементов не найден, выберите первый элемент
                     if (comboBox3.Items.Count > 0)
                     {
                         comboBox3.SelectedIndex = 0;
@@ -598,7 +580,6 @@ namespace Norms
                 }
             }
         }
-        //получение информации о различных параметрах резки
         private void GetInformationAboutCutting(string material, string tickness)
         {
             bool localWork = Convert.ToBoolean(ConfigurationManager.AppSettings["localWork"]);
@@ -654,7 +635,6 @@ namespace Norms
             }
         }
 
-        //получение параметров скорости врезки
         private void GetSpeed(string tickness)
         {
             try
@@ -725,10 +705,8 @@ namespace Norms
                 MessageBox.Show("Код ошибки: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        //смена металла
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Очистка элементов comboBox перед добавлением новых
             comboBox2.Items.Clear();
 
             string selectedMaterial = comboBox1.Text;
@@ -748,7 +726,6 @@ namespace Norms
                         comboBox2.Items.Add(Convert.ToString(DR2[0]));
                     }
 
-                    // Закрытие DataReader
                     DR2.Close();
                 }
                 else
@@ -777,7 +754,6 @@ namespace Norms
                 }
             }
         }
-        //смена толщины
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             string machine = comboBox5.Text;
@@ -790,7 +766,6 @@ namespace Norms
             CuttingCalcution();
         }
 
-        //максимальная скорость
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             if (!String.IsNullOrEmpty(comboBox2.Text))
@@ -801,7 +776,6 @@ namespace Norms
             }
         }
 
-        //средняя скорость
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             if (!String.IsNullOrEmpty(comboBox2.Text))
@@ -812,7 +786,6 @@ namespace Norms
             }
         }
 
-        //минимальная скорость
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
             if (!String.IsNullOrEmpty(comboBox2.Text))
@@ -859,7 +832,6 @@ namespace Norms
             DR.Close();
         }
 
-        //задание малого контура
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox1.Checked)
@@ -956,7 +928,6 @@ namespace Norms
             }
         }
 
-        //задание разметки
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             ViparPereckid();
@@ -996,7 +967,6 @@ namespace Norms
         }
 
         private void Stanok3030Form_FormClosing(object sender, FormClosingEventArgs e) => this.Owner.Show();
-        //включение и отключение большого контура
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
@@ -1019,7 +989,6 @@ namespace Norms
 
             CuttingCalcution();
         }
-        //включение и отключение авторежима
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
             if (!checkBox4.Checked)
@@ -1262,7 +1231,6 @@ namespace Norms
             float sum = 0f;
             foreach (var item in listBox1.Items)
             {
-                // Попытка преобразовать значение к целочисленному типу и сложение значений.
                 if (float.TryParse(item.ToString(), out float number))
                 {
                     sum += number;
@@ -1274,7 +1242,6 @@ namespace Norms
                 }
             }
 
-            // Вывод результата в TextBox.
             textBox2.Text = sum.ToString();
         }
 
@@ -1297,7 +1264,7 @@ namespace Norms
         {
             if (!_listPanelEnabled)
             {
-                ResizeForm(1.25); // увеличиваем на 10%
+                ResizeForm(1.25);
                 _listPanelEnabled = true;
             }
         }
@@ -1306,13 +1273,12 @@ namespace Norms
         {
             if (_listPanelEnabled)
             {
-                ResizeForm(0.8); // уменьшаем на 10%
+                ResizeForm(0.8);
                 _listPanelEnabled = false;
             }
         }
 
         private void ResizeForm(double factor) =>
-            // Изменяем размер формы, используя процентное соотношение
             this.Width = (int)(this.Width * factor);
 
         private void button4_Click(object sender, EventArgs e)
@@ -1464,7 +1430,6 @@ namespace Norms
         {
             if (!_firstClick && numericUpDown1.Controls[1] is TextBox textBox)
             {
-                // Сбираем выделение текста
                 textBox.SelectionStart = textBox.Text.Length;
                 textBox.SelectionLength = 0;
             }
@@ -1528,7 +1493,6 @@ namespace Norms
 
                                 int rowCount = worksheet.Dimension.Rows;
 
-                                // Добавить новую колонку для результатов
                                 worksheet.Cells[1, 4].Value = "Время реза";
 
                                 for (int row = 2; row <= rowCount; row++)

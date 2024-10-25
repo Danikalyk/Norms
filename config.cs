@@ -7,9 +7,8 @@ namespace Norms
     {
         public const string _connectionString = @"Data Source=zt019.office.rcl.ru\SQLEXPRESS;Initial Catalog=GAS_CUTTING;User ID=sa;Password=EmmojoyProoo!23";
         public static int openedWindows = 0;
-        public static string sqLiteConnectionString = $"Data Source={Path.Combine(Environment.CurrentDirectory, "Data", "gas_cutting.db")}";
-        public static string pluginFolder = $"{Path.Combine(Environment.CurrentDirectory, "Plugin")}";
-        public static string _postgreConnectionString = @"postgres:\\postgres:Neoclassic!23@localhost:5432\RCLT_DATA?sslmode=disable";
+        public static readonly string sqLiteConnectionString = $"Data Source={Path.Combine(Environment.CurrentDirectory, "Data", "gas_cutting.db")}";
+        public static readonly string pluginFolder = $"{Path.Combine(Environment.CurrentDirectory, "Plugin")}";
 
         public static double xRazm = 0;
         public static double yRazm = 0;
@@ -35,7 +34,7 @@ namespace Norms
             "MM,AT,1, 390,1,1,,'Surface Optical Reflection Property'   ,,'',Z\r\n" +
             "C\r\n";
 
-        public static string BEGIN_SHEET_TECH_5030 =
+        public static readonly string BEGIN_SHEET_TECH_5030 =
             "BEGIN_SHEET_TECH\r\n" +
             "C\r\n" +
             "ZA,MM,10\r\n" +
@@ -51,7 +50,7 @@ namespace Norms
             "MM,AT,1, 290,1,1,,'Werkstoffkennung'                      ,,'',T\r\n" +
             "C\r\n";
 
-        public static string BEGIN_MACHINE_LOAD_DATA =
+        public static readonly string BEGIN_MACHINE_LOAD_DATA =
             "BEGIN_MACHINE_LOAD_DATA\r\n" +
             "C\r\n" +
             "ZA,MM,9\r\n" +
@@ -71,7 +70,7 @@ namespace Norms
             "ENDE_MACHINE_LOAD_DATA\r\n" +
             "C\r\n";
 
-        public static string BEGIN_SHEET_LOAD =
+        public static readonly string BEGIN_SHEET_LOAD =
             "BEGIN_SHEET_LOAD\r\n" +
             "C\r\n" +
             "ZA,MM,24\r\n" +
@@ -107,7 +106,7 @@ namespace Norms
             "ENDE_SHEET_LOAD\r\n" +
             "C \r\n";
 
-        public static string LTT_STAMM_3030_RULES =
+        public static readonly string LTT_STAMM_3030_RULES =
             "MM,AT,1,2510,1,1,,'Approachmode Large Contour'            ,,'',Z\r\n" +
             "MM,AT,1,2520,1,1,,'Approachmode Medium Contour'           ,,'',Z\r\n" +
             "MM,AT,1,2530,1,1,,'Approachmode Small Contour'            ,,'',Z\r\n" +

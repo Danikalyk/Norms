@@ -15,17 +15,11 @@ namespace Norms
         private void GetTime(float osnTime)
         {
             if (osnTime < 3)
-            {
                 radioButton1.Checked = true;
-            }
             else if (osnTime > 3 && osnTime < 5)
-            {
                 radioButton2.Checked = true;
-            }
             else if (osnTime > 5)
-            {
                 radioButton3.Checked = true;
-            }
         }
 
         private void DopTime_Load(object sender, EventArgs e)
@@ -54,17 +48,11 @@ namespace Norms
             float metallWeight = 0f;
 
             if (radioButton6.Checked)
-            {
                 metallWeight = Convert.ToSingle(((xMetall) * (yMetall) * selectedMetallTickness * 7.9) / 1000000);
-            }
             else if (radioButton7.Checked)
-            {
                 metallWeight = Convert.ToSingle(((xMetall) * (yMetall) * selectedMetallTickness * 2.7) / 1000000);
-            }
             else if (radioButton8.Checked)
-            {
                 metallWeight = Convert.ToSingle(((xMetall) * (yMetall) * selectedMetallTickness * 4.5) / 1000000);
-            }
 
             return metallWeight;
         }
@@ -75,63 +63,39 @@ namespace Norms
 
             if (radioButton1.Checked && radioButton4.Checked)
             {
-                //3 мин и менее, масса 50 кг и менее
                 if (!checkBox1.Checked)
-                {
                     dopTime = 11 + 2 * (float)numericUpDown1.Value + 2 * (float)numericUpDown2.Value;
-                }
                 else
-                {
                     dopTime = (11 + 2 * (float)numericUpDown1.Value + 2 * (float)numericUpDown2.Value) + 3;
-                }
             }
             else if (radioButton1.Checked && radioButton5.Checked)
             {
-                //3 мин и менее, масса более 50 кг 
                 if (!checkBox1.Checked)
-                {
                     dopTime = 11 + 4 * (float)numericUpDown1.Value + 2 * (float)numericUpDown2.Value;
-                }
                 else
-                {
                     dopTime = (11 + 4 * (float)numericUpDown1.Value + 2 * (float)numericUpDown2.Value) + 3;
-                }
 
             }
             else if (radioButton2.Checked && radioButton5.Checked)
             {
-                //от 3 до 5 минут, масса более 50 кг
                 if (!checkBox1.Checked)
-                {
                     dopTime = 11 + 2 * (float)numericUpDown1.Value + 2 * (float)numericUpDown2.Value;
-                }
                 else
-                {
                     dopTime = (11 + 2 * (float)numericUpDown1.Value + 2 * (float)numericUpDown2.Value) + 3;
-                }
             }
             else if (radioButton2.Checked && radioButton4.Checked)
             {
-                //от 3 до 5 минут, масса 50 и менее
                 if (!checkBox1.Checked)
-                {
                     dopTime = 11 + (float)numericUpDown1.Value + 2 * (float)numericUpDown2.Value;
-                }
                 else
-                {
                     dopTime = (11 + (float)numericUpDown1.Value + 2 * (float)numericUpDown2.Value) + 3;
-                }
             }
             else if (radioButton3.Checked)
             {
                 if (!checkBox1.Checked)
-                {
                     dopTime = 11 + (float)numericUpDown1.Value + 2 * (float)numericUpDown2.Value;
-                }
                 else
-                {
                     dopTime = (11 + (float)numericUpDown1.Value + 2 * (float)numericUpDown2.Value) + 3;
-                }
             }
 
             return dopTime;

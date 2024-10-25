@@ -167,6 +167,7 @@
             // numericUpDown1
             // 
             numericUpDown1.Location = new System.Drawing.Point(214, 43);
+            numericUpDown1.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new System.Drawing.Size(70, 27);
             numericUpDown1.TabIndex = 10;
@@ -175,6 +176,7 @@
             // numericUpDown2
             // 
             numericUpDown2.Location = new System.Drawing.Point(214, 113);
+            numericUpDown2.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
             numericUpDown2.Name = "numericUpDown2";
             numericUpDown2.Size = new System.Drawing.Size(70, 27);
             numericUpDown2.TabIndex = 11;
@@ -250,6 +252,7 @@
             // numericUpDown3
             // 
             numericUpDown3.Location = new System.Drawing.Point(520, 7);
+            numericUpDown3.Maximum = new decimal(new int[] { 999999, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
             numericUpDown3.Size = new System.Drawing.Size(75, 27);
             numericUpDown3.TabIndex = 18;
@@ -260,6 +263,7 @@
             // numericUpDown4
             // 
             numericUpDown4.Location = new System.Drawing.Point(482, 43);
+            numericUpDown4.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
             numericUpDown4.Name = "numericUpDown4";
             numericUpDown4.Size = new System.Drawing.Size(75, 27);
             numericUpDown4.TabIndex = 19;
@@ -270,6 +274,7 @@
             // numericUpDown5
             // 
             numericUpDown5.Location = new System.Drawing.Point(465, 77);
+            numericUpDown5.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
             numericUpDown5.Name = "numericUpDown5";
             numericUpDown5.Size = new System.Drawing.Size(75, 27);
             numericUpDown5.TabIndex = 20;
@@ -280,6 +285,7 @@
             // numericUpDown6
             // 
             numericUpDown6.Location = new System.Drawing.Point(421, 110);
+            numericUpDown6.Maximum = new decimal(new int[] { 999999, 0, 0, 0 });
             numericUpDown6.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown6.Name = "numericUpDown6";
             numericUpDown6.Size = new System.Drawing.Size(75, 27);
@@ -291,6 +297,7 @@
             // numericUpDown7
             // 
             numericUpDown7.Location = new System.Drawing.Point(422, 148);
+            numericUpDown7.Maximum = new decimal(new int[] { 999999, 0, 0, 0 });
             numericUpDown7.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown7.Name = "numericUpDown7";
             numericUpDown7.Size = new System.Drawing.Size(75, 27);
