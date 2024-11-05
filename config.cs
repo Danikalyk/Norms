@@ -5,7 +5,7 @@ namespace Norms
 {
     public static class config
     {
-        public const string _connectionString = @"Data Source=zt019.office.rcl.ru\SQLEXPRESS;Initial Catalog=GAS_CUTTING;User ID=sa;Password=EmmojoyProoo!23";
+        public const string _connectionString = @"";
         public static int openedWindows = 0;
         public static readonly string sqLiteConnectionString = $"Data Source={Path.Combine(Environment.CurrentDirectory, "Data", "gas_cutting.db")}";
         public static readonly string pluginFolder = $"{Path.Combine(Environment.CurrentDirectory, "Plugin")}";
