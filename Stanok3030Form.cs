@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using OfficeOpenXml;
 
@@ -64,6 +69,8 @@ namespace Norms
             {
                 MessageBox.Show("Код ошибки: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            //GetMachinesServer();
 
             radioButton3.Checked = true;
 
@@ -477,7 +484,7 @@ namespace Norms
             numericUpDown2.GotFocus += new EventHandler(numericUpDown_GotFocus);
             numericUpDown2.Click += new EventHandler(numericUpDown_Click);
             GetStanok(_selectedStanok);
-            comboBox2.SelectedIndex = 0;
+            //comboBox2.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
             comboBox6.SelectedIndex = 0;
 
@@ -741,6 +748,8 @@ namespace Norms
                     SLDR.Close();
                     sqliteConn.Close();
                 }
+
+                //GetTicknessesServer("Большой");
 
                 string selectedTicknessStr = _selectedTickness.ToString();
 
@@ -1665,5 +1674,194 @@ namespace Norms
             dtu.Show();
             config.openedWindows += 1;
         }
+
+        //клиент-серверная архитектура
+
+        private static readonly HttpClient _httpClient = new();
+        private async Task GetMachinesServer()
+        {
+            string url = "http://192.168.71.83:3000/machines";
+
+            try
+            {
+                using HttpResponseMessage response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                using var stream = await response.Content.ReadAsStreamAsync();
+                List<Machines> machines = await JsonSerializer.DeserializeAsync<List<Machines>>(stream, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultBufferSize = 15360,
+                    IgnoreNullValues = true,
+                });
+
+                comboBox5.DataSource = machines;
+                comboBox5.DisplayMember = "MachinelName";
+                comboBox5.ValueMember = "MachineName";
+            }
+            catch (HttpRequestException e)
+            {
+                MessageBox.Show($"Ошибка запроса: {e.Message}");
+            }
+            catch (JsonException e)
+            {
+                MessageBox.Show($"Ошибка десериализации JSON: {e.Message}");
+            }
+
+            int index = comboBox5.FindStringExact(_selectedStanok);
+            if (index != -1)
+            {
+                comboBox5.SelectedIndex = index;
+            }
+
+            comboBox2.SelectedIndex = 0;
+        }
+
+        private async Task GetMaterialsServer()
+        {
+            comboBox1.Items.Clear();
+            string machine = comboBox5.Text;
+
+            string url = $"http://192.168.71.83:3000/materials?machine_name={machine}";
+
+            try
+            {
+                using HttpResponseMessage response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                using var stream = await response.Content.ReadAsStreamAsync();
+                List<MaterialsServer> materials = await JsonSerializer.DeserializeAsync<List<MaterialsServer>>(stream, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultBufferSize = 15360,
+                    IgnoreNullValues = true,
+                });
+
+                comboBox1.DataSource = materials;
+                comboBox1.DisplayMember = "MaterialName";
+                comboBox1.ValueMember = "MaterialName";
+            }
+            catch (HttpRequestException e)
+            {
+                MessageBox.Show($"Ошибка запроса: {e.Message}");
+            }
+            catch (JsonException e)
+            {
+                MessageBox.Show($"Ошибка десериализации JSON: {e.Message}");
+            }
+
+            bool itemFound = false;
+
+            foreach (var item in comboBox1.Items)
+            {
+                if (item.ToString() == "Конструкционная сталь")
+                {
+                    comboBox1.SelectedItem = item;
+                    itemFound = true;
+                    break;
+                }
+            }
+
+            if (!itemFound)
+            {
+                comboBox1.SelectedIndex = 0;
+            }
+        }
+
+        private async Task GetTicknessesServer(string contourType)
+        {
+            comboBox2.Items.Clear();
+            string machine = comboBox5.Text;
+            string material = comboBox1.Text;
+
+            string url = $"http://192.168.71.83:3000/tickness?machine_name={machine}&material_name={material}&contour_type={contourType}";
+
+            try
+            {
+                using HttpResponseMessage response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                using var stream = await response.Content.ReadAsStreamAsync();
+                List<Tickness> ticknesses = await JsonSerializer.DeserializeAsync<List<Tickness>>(stream, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultBufferSize = 15360,
+                    IgnoreNullValues = true,
+                });
+
+                comboBox2.DataSource = ticknesses;
+                comboBox2.DisplayMember = "TicknessValue";
+                comboBox2.ValueMember = "TicknessValue";
+            }
+            catch (HttpRequestException e)
+            {
+                MessageBox.Show($"Ошибка запроса: {e.Message}");
+            }
+            catch (JsonException e)
+            {
+                MessageBox.Show($"Ошибка десериализации JSON: {e.Message}");
+            }
+        }
+
+        private async Task GetGasesServer(string contourType)
+        {
+            comboBox3.Items.Clear();
+            string machine = comboBox5.Text;
+            string material = comboBox1.Text;
+            string tickness = comboBox2.Text;
+
+            string url = $"http://192.168.71.83:3000/tickness?machine_name={machine}&material_name={material}&tickness={tickness}&contour_type={contourType}";
+
+            try
+            {
+                using HttpResponseMessage response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                using var stream = await response.Content.ReadAsStreamAsync();
+                List<Tickness> ticknesses = await JsonSerializer.DeserializeAsync<List<Tickness>>(stream, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultBufferSize = 15360,
+                    IgnoreNullValues = true,
+                });
+
+                comboBox2.DataSource = ticknesses;
+                comboBox2.DisplayMember = "TicknessValue";
+                comboBox2.ValueMember = "TicknessValue";
+            }
+            catch (HttpRequestException e)
+            {
+                MessageBox.Show($"Ошибка запроса: {e.Message}");
+            }
+            catch (JsonException e)
+            {
+                MessageBox.Show($"Ошибка десериализации JSON: {e.Message}");
+            }
+        }
+
+        private void GetCuttingInfoServer()
+        {
+
+        }
     }
+
+    public class Machines
+    {
+        [JsonPropertyName("machine_name")]
+        public string? MachineName { get; set; }
+    }
+
+    public class MaterialsServer
+    {
+        [JsonPropertyName("material_name")]
+        public string? MaterialName { get; set; }
+    }
+
+    public class Tickness
+    {
+        [JsonPropertyName("tickness")]
+        public string? TicknessValue { get; set; }
+    }
+
+
 }
